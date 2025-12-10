@@ -23,7 +23,8 @@ body {
 }
 
 body {
-  font-family: "Inter", system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+  font-family: "Inter", system-ui, -apple-system, BlinkMacSystemFont,
+    "Segoe UI", sans-serif;
   background: #000; /* so the 9:16 frame stands out when recording */
   display: flex;
   align-items: center;
@@ -37,7 +38,8 @@ body {
   background: var(--bg);
   border-radius: 28px;
   overflow: hidden;
-  box-shadow: 0 0 0 1px rgba(0, 0, 0, 0.06), 0 40px 80px rgba(0, 0, 0, 0.4);
+  box-shadow: 0 0 0 1px rgba(0, 0, 0, 0.06),
+    0 40px 80px rgba(0, 0, 0, 0.4);
   display: flex;
   align-items: stretch;
   justify-content: center;
@@ -71,7 +73,12 @@ body {
 /* Intro */
 
 .scene--intro {
-  background: radial-gradient(circle at top, #ffffff 0%, #f2f4f8 55%, #e2e7f0 100%);
+  background: radial-gradient(
+    circle at top,
+    #ffffff 0%,
+    #f2f4f8 55%,
+    #e2e7f0 100%
+  );
 }
 
 .intro-stack {
@@ -80,6 +87,7 @@ body {
   flex-direction: column;
   gap: 12px;
   align-items: center;
+  animation: intro-pop 900ms ease-out forwards;
 }
 
 .logo {
@@ -98,6 +106,17 @@ body {
   color: var(--ink);
 }
 
+@keyframes intro-pop {
+  from {
+    opacity: 0;
+    transform: translateY(16px) scale(0.95);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
 /* Shared scene layout (Events, Featured, Guides) */
 
 .scene-inner {
@@ -107,6 +126,12 @@ body {
   gap: 18px;
   width: 100%;
   height: 100%;
+  opacity: 0;
+  transform: translateY(14px);
+}
+
+.scene.active .scene-inner {
+  animation: scene-inner-rise 650ms ease-out forwards;
 }
 
 .scene-inner--reverse {
@@ -149,6 +174,17 @@ body {
   margin-top: 8px;
 }
 
+@keyframes scene-inner-rise {
+  from {
+    opacity: 0;
+    transform: translateY(14px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
 /* Phone shell – 3D-ish Apple vibe */
 
 .phone-shell {
@@ -158,27 +194,179 @@ body {
   max-width: 280px;
   aspect-ratio: 9 / 19;
   border-radius: var(--radius-phone);
-  background: radial-gradient(circle at 10% 0%, #ffffff 0%, #e2e7f0 40%, #c5cedf 100%);
+  background: radial-gradient(
+    circle at 10% 0%,
+    #ffffff 0%,
+    #e2e7f0 40%,
+    #c5cedf 100%
+  );
   box-shadow: var(--shadow-phone);
   padding: 10px;
   transform-style: preserve-3d;
+  opacity: 0;
 }
 
-/* Per-scene phone motion */
+/* Base phone entrance (overridden per scene) */
+.scene.active .phone-shell {
+  animation: phone-enter-base 600ms ease-out forwards;
+}
 
-/* NEW: Events Near Me motion */
+@keyframes phone-enter-base {
+  from {
+    opacity: 0;
+    transform: translateY(18px) scale(0.92);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+/* Per-scene phone motion
+   Each scene gets:
+   - an entrance animation
+   - an infinite subtle orbit with a delay so it starts after entering
+*/
+
+/* Events Near Me motion: slight up-and-in + centered orbit */
 .phone-shell--events {
-  animation: phone-events-orbit 18s ease-in-out infinite;
+  /* infinite orbit will be layered when active */
 }
 
-/* Featured Tours motion */
+.scene--events.active .phone-shell--events {
+  animation:
+    phone-events-enter 600ms ease-out forwards,
+    phone-events-orbit 18s ease-in-out infinite 0.6s;
+}
+
+@keyframes phone-events-enter {
+  from {
+    opacity: 0;
+    transform: translateY(28px) scale(0.9)
+      rotateX(14deg) rotateY(-16deg) rotateZ(-2deg);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1)
+      rotateX(8deg) rotateY(-6deg) rotateZ(-0.5deg);
+  }
+}
+
+@keyframes phone-events-orbit {
+  0% {
+    transform: rotateX(8deg) rotateY(-6deg) rotateZ(-0.5deg)
+      translateY(8px) scale(0.97);
+  }
+  25% {
+    transform: rotateX(6deg) rotateY(-2deg) rotateZ(0)
+      translateY(0px) scale(1);
+  }
+  50% {
+    transform: rotateX(4deg) rotateY(10deg) rotateZ(0.4deg)
+      translateY(-6px) scale(1.02);
+  }
+  75% {
+    transform: rotateX(7deg) rotateY(2deg) rotateZ(0)
+      translateY(2px) scale(1);
+  }
+  100% {
+    transform: rotateX(8deg) rotateY(-6deg) rotateZ(-0.5deg)
+      translateY(8px) scale(0.97);
+  }
+}
+
+/* Featured Tours motion: enter from right with orbit */
 .phone-shell--feature {
-  animation: phone-feature-orbit 16s ease-in-out infinite;
+  transform-origin: center center;
 }
 
-/* City Guides motion */
+.scene--feature.active .phone-shell--feature {
+  animation:
+    phone-feature-enter 600ms cubic-bezier(0.19, 1, 0.22, 1) forwards,
+    phone-feature-orbit 16s ease-in-out infinite 0.6s;
+}
+
+@keyframes phone-feature-enter {
+  from {
+    opacity: 0;
+    transform: translateX(40px) translateY(16px) scale(0.9)
+      rotateX(16deg) rotateY(-24deg) rotateZ(-3deg);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0) translateY(0) scale(1)
+      rotateX(10deg) rotateY(-14deg) rotateZ(-0.5deg);
+  }
+}
+
+@keyframes phone-feature-orbit {
+  0% {
+    transform: rotateX(10deg) rotateY(-14deg) rotateZ(-0.5deg)
+      translateY(10px) scale(0.97);
+  }
+  25% {
+    transform: rotateX(9deg) rotateY(-6deg) rotateZ(0)
+      translateY(2px) scale(1);
+  }
+  50% {
+    transform: rotateX(7deg) rotateY(6deg) rotateZ(0.8deg)
+      translateY(-8px) scale(1.02);
+  }
+  75% {
+    transform: rotateX(9deg) rotateY(-2deg) rotateZ(0)
+      translateY(2px) scale(1);
+  }
+  100% {
+    transform: rotateX(10deg) rotateY(-14deg) rotateZ(-0.5deg)
+      translateY(10px) scale(0.97);
+  }
+}
+
+/* City Guides motion: enter from left with reversed orbit */
 .phone-shell--guides {
-  animation: phone-guides-orbit 18s ease-in-out infinite;
+  transform-origin: center center;
+}
+
+.scene--guides.active .phone-shell--guides {
+  animation:
+    phone-guides-enter 600ms cubic-bezier(0.19, 1, 0.22, 1) forwards,
+    phone-guides-orbit 18s ease-in-out infinite 0.6s;
+}
+
+@keyframes phone-guides-enter {
+  from {
+    opacity: 0;
+    transform: translateX(-40px) translateY(16px) scale(0.9)
+      rotateX(16deg) rotateY(20deg) rotateZ(3deg);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0) translateY(0) scale(1)
+      rotateX(10deg) rotateY(10deg) rotateZ(0.5deg);
+  }
+}
+
+@keyframes phone-guides-orbit {
+  0% {
+    transform: rotateX(10deg) rotateY(10deg) rotateZ(0.5deg)
+      translateY(8px) scale(0.97);
+  }
+  25% {
+    transform: rotateX(8deg) rotateY(4deg) rotateZ(0)
+      translateY(0px) scale(1);
+  }
+  50% {
+    transform: rotateX(7deg) rotateY(-8deg) rotateZ(-0.4deg)
+      translateY(-6px) scale(1.02);
+  }
+  75% {
+    transform: rotateX(9deg) rotateY(0deg) rotateZ(0)
+      translateY(2px) scale(1);
+  }
+  100% {
+    transform: rotateX(10deg) rotateY(10deg) rotateZ(0.5deg)
+      translateY(8px) scale(0.97);
+  }
 }
 
 .phone-shell--small {
@@ -224,63 +412,7 @@ body {
   opacity: 0.7;
 }
 
-/* Phone orbits */
-
-@keyframes phone-events-orbit {
-  0% {
-    transform: rotateX(10deg) rotateY(-8deg) rotateZ(-0.5deg) translateY(10px) scale(0.96);
-  }
-  25% {
-    transform: rotateX(8deg) rotateY(-2deg) rotateZ(0deg) translateY(2px) scale(1);
-  }
-  50% {
-    transform: rotateX(6deg) rotateY(10deg) rotateZ(0.5deg) translateY(-6px) scale(1.02);
-  }
-  75% {
-    transform: rotateX(9deg) rotateY(4deg) rotateZ(0deg) translateY(0px) scale(1);
-  }
-  100% {
-    transform: rotateX(10deg) rotateY(-8deg) rotateZ(-0.5deg) translateY(10px) scale(0.96);
-  }
-}
-
-@keyframes phone-feature-orbit {
-  0% {
-    transform: rotateX(14deg) rotateY(-18deg) rotateZ(-1deg) translateY(10px) scale(0.96);
-  }
-  25% {
-    transform: rotateX(10deg) rotateY(-10deg) rotateZ(0deg) translateY(0px) scale(1);
-  }
-  50% {
-    transform: rotateX(8deg) rotateY(8deg) rotateZ(1deg) translateY(-8px) scale(1.02);
-  }
-  75% {
-    transform: rotateX(12deg) rotateY(0deg) rotateZ(0deg) translateY(2px) scale(1);
-  }
-  100% {
-    transform: rotateX(14deg) rotateY(-18deg) rotateZ(-1deg) translateY(10px) scale(0.96);
-  }
-}
-
-@keyframes phone-guides-orbit {
-  0% {
-    transform: rotateX(12deg) rotateY(12deg) rotateZ(0deg) translateY(8px) scale(0.96);
-  }
-  25% {
-    transform: rotateX(9deg) rotateY(4deg) rotateZ(-0.5deg) translateY(0px) scale(1);
-  }
-  50% {
-    transform: rotateX(7deg) rotateY(-10deg) rotateZ(0.5deg) translateY(-6px) scale(1.02);
-  }
-  75% {
-    transform: rotateX(10deg) rotateY(0deg) rotateZ(0deg) translateY(2px) scale(1);
-  }
-  100% {
-    transform: rotateX(12deg) rotateY(12deg) rotateZ(0deg) translateY(8px) scale(0.96);
-  }
-}
-
-/* Scene 3: Venue info (4-phone grid) */
+/* Scene 4: Venue info (4-phone grid) */
 
 .scene--venue {
   padding-top: 26px;
@@ -293,6 +425,23 @@ body {
   gap: 18px;
   height: 100%;
   justify-content: space-between;
+  opacity: 0;
+  transform: translateY(16px);
+}
+
+.scene--venue.active .venue-inner {
+  animation: venue-inner-rise 650ms ease-out forwards;
+}
+
+@keyframes venue-inner-rise {
+  from {
+    opacity: 0;
+    transform: translateY(16px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
 }
 
 .venue-copy {
@@ -305,7 +454,7 @@ body {
   gap: 10px;
 }
 
-/* Staggered pop for four phones */
+/* Staggered pop + subtle breathing for four phones */
 
 .venue-phone-1,
 .venue-phone-2,
@@ -316,22 +465,30 @@ body {
 }
 
 .scene--venue.active .venue-phone-1 {
-  animation: venue-phone-pop 450ms ease-out forwards;
+  animation:
+    venue-phone-pop 450ms ease-out forwards,
+    venue-phone-breathe 8s ease-in-out infinite 0.45s;
   animation-delay: 60ms;
 }
 
 .scene--venue.active .venue-phone-2 {
-  animation: venue-phone-pop 450ms ease-out forwards;
+  animation:
+    venue-phone-pop 450ms ease-out forwards,
+    venue-phone-breathe 8s ease-in-out infinite 0.55s;
   animation-delay: 160ms;
 }
 
 .scene--venue.active .venue-phone-3 {
-  animation: venue-phone-pop 450ms ease-out forwards;
+  animation:
+    venue-phone-pop 450ms ease-out forwards,
+    venue-phone-breathe 8s ease-in-out infinite 0.65s;
   animation-delay: 260ms;
 }
 
 .scene--venue.active .venue-phone-4 {
-  animation: venue-phone-pop 450ms ease-out forwards;
+  animation:
+    venue-phone-pop 450ms ease-out forwards,
+    venue-phone-breathe 8s ease-in-out infinite 0.75s;
   animation-delay: 360ms;
 }
 
@@ -346,7 +503,19 @@ body {
   }
 }
 
-/* Outro overlay */
+@keyframes venue-phone-breathe {
+  0% {
+    transform: translateY(0px) scale(1);
+  }
+  50% {
+    transform: translateY(-3px) scale(1.01);
+  }
+  100% {
+    transform: translateY(0px) scale(1);
+  }
+}
+
+/* Outro overlay (NO shadow on logo now) */
 
 .outro {
   position: absolute;
@@ -379,8 +548,8 @@ body {
 
 .logo--outro {
   width: 120px;
-  filter: drop-shadow(0 10px 22px rgba(0, 0, 0, 0.18));
-  animation: outro-glow 4s ease-in-out infinite;
+  /* removed drop shadow for cleaner flat look */
+  filter: none;
 }
 
 .outro-headline {
@@ -413,21 +582,13 @@ body {
   }
 }
 
-@keyframes outro-glow {
-  0% {
-    filter: drop-shadow(0 10px 22px rgba(0, 0, 0, 0.2));
-  }
-  50% {
-    filter: drop-shadow(0 14px 30px rgba(0, 0, 0, 0.32));
-  }
-  100% {
-    filter: drop-shadow(0 10px 22px rgba(0, 0, 0, 0.2));
-  }
-}
-
 @keyframes outro-text-fade {
-  from { opacity: 0; }
-  to { opacity: 1; }
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
 }
 
 /* Small-screen tweaks (just in case) */
