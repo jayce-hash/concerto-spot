@@ -4,10 +4,11 @@
   --muted: #5E6B86;
   --card: #FFFFFF;
   --border: #E2E7F0;
-  --shadow-phone: 0 18px 40px rgba(0, 0, 0, 0.16);
-  --radius-phone: 32px;
+  --shadow-phone: 0 24px 60px rgba(0, 0, 0, 0.18);
+  --radius-phone: 40px;
 }
 
+/* Reset */
 *,
 *::before,
 *::after {
@@ -23,28 +24,43 @@ body {
 
 body {
   font-family: "Inter", system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+  background: #000; /* so the 9:16 frame stands out when recording */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* 9:16 vertical frame for Reels/TikTok/Shorts */
+.frame {
+  width: min(430px, 100vw);
+  aspect-ratio: 9 / 16;
   background: var(--bg);
-  color: var(--ink);
+  border-radius: 28px;
+  overflow: hidden;
+  box-shadow: 0 0 0 1px rgba(0, 0, 0, 0.06), 0 40px 80px rgba(0, 0, 0, 0.4);
+  display: flex;
+  align-items: stretch;
+  justify-content: center;
 }
 
 .page {
-  height: 100vh;
-  width: 100vw;
-  overflow: hidden;
   position: relative;
+  width: 100%;
+  height: 100%;
 }
 
-/* Generic scenes */
+/* Scenes */
 
 .scene {
   position: absolute;
   inset: 0;
   opacity: 0;
   pointer-events: none;
+  transition: opacity 450ms ease;
   display: flex;
   align-items: center;
   justify-content: center;
-  transition: opacity 450ms ease;
+  padding: 24px 22px 28px;
 }
 
 .scene.active {
@@ -52,147 +68,68 @@ body {
   pointer-events: auto;
 }
 
-/* Intro scene */
+/* Intro */
 
 .scene--intro {
-  background: radial-gradient(circle at top, #ffffff 0%, #f2f4f8 60%, #e2e7f0 100%);
+  background: radial-gradient(circle at top, #ffffff 0%, #f2f4f8 55%, #e2e7f0 100%);
 }
 
-.center-stack {
+.intro-stack {
+  text-align: center;
   display: flex;
   flex-direction: column;
+  gap: 12px;
   align-items: center;
-  gap: 10px;
-  text-align: center;
-  padding: 0 24px;
 }
 
 .logo {
-  width: 140px;
-  height: auto;
+  display: block;
+}
+
+.logo--intro {
+  width: 160px;
 }
 
 .eyebrow {
   font-family: "Cormorant Garamond", serif;
-  letter-spacing: 0.18em;
-  text-transform: uppercase;
-  font-size: 0.9rem;
-}
-
-/* Shared layout for scenes 1 & 2 */
-
-.content {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: 32px;
-  padding: 24px;
-  max-width: 960px;
-  width: 100%;
-}
-
-.content--reverse {
-  flex-direction: row-reverse;
-}
-
-@media (max-width: 768px) {
-  .content,
-  .content--reverse {
-    flex-direction: column;
-    gap: 20px;
-  }
-}
-
-/* Phone frame base */
-
-.phone-frame {
-  background: linear-gradient(160deg, #ffffff, #f1f4fb);
-  border-radius: var(--radius-phone);
-  padding: 10px;
-  box-shadow: var(--shadow-phone);
-  border: 1px solid rgba(0, 0, 0, 0.03);
-  overflow: hidden;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
-
-.phone-video,
-.phone-image {
-  width: 100%;
-  height: 100%;
-  border-radius: calc(var(--radius-phone) - 10px);
-  object-fit: cover;
-  background: #000;
-}
-
-/* Scene 1: Featured Tours – one phone with subtle float/zoom */
-
-.phone-frame--featured {
-  width: min(320px, 65vw);
-  height: calc(min(320px, 65vw) * 2);
-  animation: featured-drift 16s ease-in-out infinite;
-  transform-origin: center center;
-}
-
-@keyframes featured-drift {
-  0% {
-    transform: translateY(8px) scale(0.97) rotate(-0.4deg);
-  }
-  30% {
-    transform: translateY(0) scale(1) rotate(0deg);
-  }
-  60% {
-    transform: translateY(-6px) scale(1.02) rotate(0.3deg);
-  }
-  100% {
-    transform: translateY(8px) scale(0.97) rotate(-0.4deg);
-  }
-}
-
-/* Scene 2: City Guides – one phone with horizontal drift */
-
-.phone-frame--guides {
-  width: min(320px, 65vw);
-  height: calc(min(320px, 65vw) * 2);
-  animation: guides-sway 18s ease-in-out infinite;
-  transform-origin: center center;
-}
-
-@keyframes guides-sway {
-  0% {
-    transform: translateX(0px) translateY(6px) scale(0.98) rotate(0deg);
-  }
-  25% {
-    transform: translateX(-6px) translateY(0px) scale(1) rotate(-0.5deg);
-  }
-  50% {
-    transform: translateX(4px) translateY(-4px) scale(1.01) rotate(0.4deg);
-  }
-  75% {
-    transform: translateX(-2px) translateY(2px) scale(1) rotate(0deg);
-  }
-  100% {
-    transform: translateX(0px) translateY(6px) scale(0.98) rotate(0deg);
-  }
-}
-
-/* Text blocks */
-
-.text-block {
-  max-width: 320px;
-}
-
-.text-block h1 {
-  font-family: "Cormorant Garamond", serif;
-  font-size: 1.4rem;
   letter-spacing: 0.22em;
   text-transform: uppercase;
-  margin-bottom: 6px;
+  font-size: 0.9rem;
+  color: var(--ink);
 }
 
-.text-block p {
-  font-size: 0.9rem;
+/* Shared scene layout (Events, Featured, Guides) */
+
+.scene-inner {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  gap: 18px;
+  width: 100%;
+  height: 100%;
+}
+
+.scene-inner--reverse {
+  flex-direction: column;
+}
+
+.scene-copy {
+  padding-top: 12px;
+}
+
+/* Headings & copy */
+
+.scene-copy h1,
+.venue-copy h1 {
+  font-family: "Cormorant Garamond", serif;
+  font-size: 1.1rem;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  margin-bottom: 4px;
+}
+
+.lede {
+  font-size: 0.88rem;
   color: var(--muted);
   margin-bottom: 8px;
 }
@@ -204,127 +141,231 @@ body {
   display: flex;
   flex-direction: column;
   gap: 4px;
-  font-size: 0.8rem;
+  font-size: 0.78rem;
   color: var(--muted);
 }
 
 .feature-list--venue {
-  margin-top: 10px;
+  margin-top: 8px;
 }
 
-/* Scene 3: Venue information – 4-phone grid */
+/* Phone shell – 3D-ish Apple vibe */
 
-.scene--venue {
-  padding: 24px;
+.phone-shell {
+  align-self: center;
+  position: relative;
+  width: 68%;
+  max-width: 280px;
+  aspect-ratio: 9 / 19;
+  border-radius: var(--radius-phone);
+  background: radial-gradient(circle at 10% 0%, #ffffff 0%, #e2e7f0 40%, #c5cedf 100%);
+  box-shadow: var(--shadow-phone);
+  padding: 10px;
+  transform-style: preserve-3d;
 }
 
-.venue-layout {
-  max-width: 1024px;
+/* Per-scene phone motion */
+
+/* NEW: Events Near Me motion */
+.phone-shell--events {
+  animation: phone-events-orbit 18s ease-in-out infinite;
+}
+
+/* Featured Tours motion */
+.phone-shell--feature {
+  animation: phone-feature-orbit 16s ease-in-out infinite;
+}
+
+/* City Guides motion */
+.phone-shell--guides {
+  animation: phone-guides-orbit 18s ease-in-out infinite;
+}
+
+.phone-shell--small {
   width: 100%;
-  margin: 0 auto;
-  display: grid;
-  grid-template-columns: minmax(0, 0.9fr) minmax(0, 1.1fr);
-  gap: 32px;
-  align-items: center;
+  max-width: none;
+  aspect-ratio: 9 / 19;
+  border-radius: 32px;
+  padding: 7px;
 }
 
-@media (max-width: 900px) {
-  .venue-layout {
-    grid-template-columns: 1fr;
-    gap: 24px;
+/* Inner phone glass */
+
+.phone-inner {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  border-radius: calc(var(--radius-phone) - 10px);
+  overflow: hidden;
+  background: #000;
+}
+
+.phone-screen {
+  width: 100%;
+  height: 100%;
+  display: block;
+  object-fit: cover;
+}
+
+/* Reflection overlay */
+
+.phone-reflection {
+  pointer-events: none;
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    130deg,
+    rgba(255, 255, 255, 0.18) 0%,
+    rgba(255, 255, 255, 0.02) 40%,
+    transparent 65%,
+    rgba(255, 255, 255, 0.08) 100%
+  );
+  mix-blend-mode: screen;
+  opacity: 0.7;
+}
+
+/* Phone orbits */
+
+@keyframes phone-events-orbit {
+  0% {
+    transform: rotateX(10deg) rotateY(-8deg) rotateZ(-0.5deg) translateY(10px) scale(0.96);
+  }
+  25% {
+    transform: rotateX(8deg) rotateY(-2deg) rotateZ(0deg) translateY(2px) scale(1);
+  }
+  50% {
+    transform: rotateX(6deg) rotateY(10deg) rotateZ(0.5deg) translateY(-6px) scale(1.02);
+  }
+  75% {
+    transform: rotateX(9deg) rotateY(4deg) rotateZ(0deg) translateY(0px) scale(1);
+  }
+  100% {
+    transform: rotateX(10deg) rotateY(-8deg) rotateZ(-0.5deg) translateY(10px) scale(0.96);
   }
 }
 
-.venue-copy h1 {
-  font-family: "Cormorant Garamond", serif;
-  font-size: 1.3rem;
-  letter-spacing: 0.22em;
-  text-transform: uppercase;
-  margin-bottom: 8px;
+@keyframes phone-feature-orbit {
+  0% {
+    transform: rotateX(14deg) rotateY(-18deg) rotateZ(-1deg) translateY(10px) scale(0.96);
+  }
+  25% {
+    transform: rotateX(10deg) rotateY(-10deg) rotateZ(0deg) translateY(0px) scale(1);
+  }
+  50% {
+    transform: rotateX(8deg) rotateY(8deg) rotateZ(1deg) translateY(-8px) scale(1.02);
+  }
+  75% {
+    transform: rotateX(12deg) rotateY(0deg) rotateZ(0deg) translateY(2px) scale(1);
+  }
+  100% {
+    transform: rotateX(14deg) rotateY(-18deg) rotateZ(-1deg) translateY(10px) scale(0.96);
+  }
 }
 
-.venue-copy p {
-  font-size: 0.9rem;
-  color: var(--muted);
+@keyframes phone-guides-orbit {
+  0% {
+    transform: rotateX(12deg) rotateY(12deg) rotateZ(0deg) translateY(8px) scale(0.96);
+  }
+  25% {
+    transform: rotateX(9deg) rotateY(4deg) rotateZ(-0.5deg) translateY(0px) scale(1);
+  }
+  50% {
+    transform: rotateX(7deg) rotateY(-10deg) rotateZ(0.5deg) translateY(-6px) scale(1.02);
+  }
+  75% {
+    transform: rotateX(10deg) rotateY(0deg) rotateZ(0deg) translateY(2px) scale(1);
+  }
+  100% {
+    transform: rotateX(12deg) rotateY(12deg) rotateZ(0deg) translateY(8px) scale(0.96);
+  }
 }
 
-/* 2x2 phone grid */
+/* Scene 3: Venue info (4-phone grid) */
+
+.scene--venue {
+  padding-top: 26px;
+  padding-bottom: 28px;
+}
+
+.venue-inner {
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+  height: 100%;
+  justify-content: space-between;
+}
+
+.venue-copy {
+  max-width: 100%;
+}
 
 .phone-grid {
   display: grid;
   grid-template-columns: repeat(2, minmax(0, 1fr));
-  gap: 16px;
+  gap: 10px;
 }
 
-.phone-frame--small {
-  width: 100%;
-  aspect-ratio: 9 / 18;
-  border-radius: 26px;
-}
-
-/* Staggered pop-in for 4 phones */
+/* Staggered pop for four phones */
 
 .venue-phone-1,
 .venue-phone-2,
 .venue-phone-3,
 .venue-phone-4 {
   opacity: 0;
-  transform: translateY(16px) scale(0.96);
+  transform: translateY(18px) scale(0.96);
 }
 
 .scene--venue.active .venue-phone-1 {
-  animation: venue-pop 500ms ease-out forwards;
-  animation-delay: 0ms;
+  animation: venue-phone-pop 450ms ease-out forwards;
+  animation-delay: 60ms;
 }
 
 .scene--venue.active .venue-phone-2 {
-  animation: venue-pop 500ms ease-out forwards;
-  animation-delay: 120ms;
+  animation: venue-phone-pop 450ms ease-out forwards;
+  animation-delay: 160ms;
 }
 
 .scene--venue.active .venue-phone-3 {
-  animation: venue-pop 500ms ease-out forwards;
-  animation-delay: 240ms;
+  animation: venue-phone-pop 450ms ease-out forwards;
+  animation-delay: 260ms;
 }
 
 .scene--venue.active .venue-phone-4 {
-  animation: venue-pop 500ms ease-out forwards;
+  animation: venue-phone-pop 450ms ease-out forwards;
   animation-delay: 360ms;
 }
 
-@keyframes venue-pop {
+@keyframes venue-phone-pop {
   from {
     opacity: 0;
-    transform: translateY(16px) scale(0.96);
+    transform: translateY(18px) scale(0.96);
   }
   to {
     opacity: 1;
-    transform: translateY(0) scale(1);
+    transform: translateY(0px) scale(1);
   }
 }
 
-/* Outro overlay (final logo + tagline + Download Today) */
+/* Outro overlay */
 
-.outro-overlay {
+.outro {
   position: absolute;
   inset: 0;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  pointer-events: none;
   opacity: 0;
-  background: var(--bg);
-  transition: opacity 600ms ease;
-}
-
-/* Bright, soft radial glow behind the logo when active */
-.outro-overlay.active {
-  opacity: 1;
+  pointer-events: none;
   background: radial-gradient(
     circle at center,
     rgba(255, 255, 255, 1) 0%,
-    rgba(248, 249, 249, 1) 60%
+    rgba(248, 249, 249, 1) 65%
   );
+  transition: opacity 550ms ease;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.outro.active {
+  opacity: 1;
 }
 
 .outro-stack {
@@ -332,61 +373,71 @@ body {
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 12px;
-  transform: translateY(10px);
-  opacity: 0;
-  animation: outro-appear 1.2s ease-out forwards;
+  gap: 10px;
+  animation: outro-appear 1000ms ease-out forwards;
 }
 
-.outro-logo {
-  width: 110px;
+.logo--outro {
+  width: 120px;
+  filter: drop-shadow(0 10px 22px rgba(0, 0, 0, 0.18));
   animation: outro-glow 4s ease-in-out infinite;
-}
-
-@keyframes outro-appear {
-  0% {
-    opacity: 0;
-    transform: translateY(14px) scale(0.94);
-  }
-  100% {
-    opacity: 1;
-    transform: translateY(0px) scale(1);
-  }
-}
-
-/* Soft pulse around the logo */
-@keyframes outro-glow {
-  0% {
-    filter: drop-shadow(0 0 4px rgba(18, 30, 54, 0.2));
-  }
-  50% {
-    filter: drop-shadow(0 0 10px rgba(18, 30, 54, 0.35));
-  }
-  100% {
-    filter: drop-shadow(0 0 4px rgba(18, 30, 54, 0.2));
-  }
 }
 
 .outro-headline {
   font-family: "Cormorant Garamond", serif;
-  letter-spacing: 0.18em;
+  letter-spacing: 0.22em;
   text-transform: uppercase;
-  font-size: 1.1rem;
+  font-size: 1rem;
   color: var(--ink);
   opacity: 0;
-  animation: outro-text-fade 1.2s ease-out forwards;
-  animation-delay: 0.4s;
+  animation: outro-text-fade 900ms ease-out forwards;
+  animation-delay: 300ms;
 }
 
 .outro-cta {
-  font-size: 0.95rem;
+  font-size: 0.9rem;
   color: var(--muted);
   opacity: 0;
-  animation: outro-text-fade 1.2s ease-out forwards;
-  animation-delay: 1s;
+  animation: outro-text-fade 900ms ease-out forwards;
+  animation-delay: 650ms;
+}
+
+@keyframes outro-appear {
+  from {
+    transform: translateY(16px) scale(0.95);
+    opacity: 0;
+  }
+  to {
+    transform: translateY(0px) scale(1);
+    opacity: 1;
+  }
+}
+
+@keyframes outro-glow {
+  0% {
+    filter: drop-shadow(0 10px 22px rgba(0, 0, 0, 0.2));
+  }
+  50% {
+    filter: drop-shadow(0 14px 30px rgba(0, 0, 0, 0.32));
+  }
+  100% {
+    filter: drop-shadow(0 10px 22px rgba(0, 0, 0, 0.2));
+  }
 }
 
 @keyframes outro-text-fade {
   from { opacity: 0; }
   to { opacity: 1; }
+}
+
+/* Small-screen tweaks (just in case) */
+
+@media (max-width: 380px) {
+  .scene {
+    padding: 20px 18px 24px;
+  }
+
+  .logo--intro {
+    width: 140px;
+  }
 }
