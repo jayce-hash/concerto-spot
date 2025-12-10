@@ -1,96 +1,125 @@
-// Video elements
-const featuredVideo = document.getElementById("featuredVideo");
-const guidesVideo = document.getElementById("guidesVideo");
-
-// Image elements for venue info
-const venueImg1 = document.getElementById("venueImg1");
-const venueImg2 = document.getElementById("venueImg2");
-const venueImg3 = document.getElementById("venueImg3");
-const venueImg4 = document.getElementById("venueImg4");
-
 // Scene elements
-const introScene = document.getElementById("intro-scene");
-const featuredScene = document.getElementById("featured-scene");
-const guidesScene = document.getElementById("guides-scene");
-const venueScene = document.getElementById("venue-scene");
-const outroOverlay = document.getElementById("outro-overlay");
+const sceneIntro    = document.getElementById("scene-intro");
+const sceneEvents   = document.getElementById("scene-events");
+const sceneFeatured = document.getElementById("scene-featured");
+const sceneGuides   = document.getElementById("scene-guides");
+const sceneVenue    = document.getElementById("scene-venue");
+const outro         = document.getElementById("outro");
 
-const allScenes = [introScene, featuredScene, guidesScene, venueScene];
+const scenes = [sceneIntro, sceneEvents, sceneFeatured, sceneGuides, sceneVenue];
 
-// Assign your media files here (make sure the filenames exist in your repo)
-featuredVideo.src = "featured-tours.mp4";
-guidesVideo.src = "city-guides.mp4";
+// Video elements
+const videoEvents   = document.getElementById("video-events");
+const videoFeatured = document.getElementById("video-featured");
+const videoGuides   = document.getElementById("video-guides");
 
-venueImg1.src = "venue-rideshare.png";
-venueImg2.src = "venue-bags.png";
-venueImg3.src = "venue-concessions.png";
-venueImg4.src = "venue-parking.png";
+// Venue images
+const imgVenue1 = document.getElementById("img-venue-1");
+const imgVenue2 = document.getElementById("img-venue-2");
+const imgVenue3 = document.getElementById("img-venue-3");
+const imgVenue4 = document.getElementById("img-venue-4");
 
-function showScene(sceneEl) {
-  allScenes.forEach((el) => el.classList.remove("active"));
-  if (sceneEl) sceneEl.classList.add("active");
+// Media file assignments
+videoEvents.src   = "events-near-me.mp4";
+videoFeatured.src = "featured-tours.mp4";
+videoGuides.src   = "city-guides.mp4";
+
+imgVenue1.src = "venue-rideshare.png";
+imgVenue2.src = "venue-bags.png";
+imgVenue3.src = "venue-concessions.png";
+imgVenue4.src = "venue-parking.png";
+
+// Timeline configuration (ms)
+// Intro: 1.5s, Events: 3s, Featured: 3s, Guides: 3s, Venue: 3s, Outro: 1.5s
+const DURATIONS = {
+  intro:   1500,
+  events:  3000,
+  feature: 3000,
+  guides:  3000,
+  venue:   3000,
+  outro:   1500
+};
+
+const TOTAL =
+  DURATIONS.intro +
+  DURATIONS.events +
+  DURATIONS.feature +
+  DURATIONS.guides +
+  DURATIONS.venue +
+  DURATIONS.outro; // 15000 ms
+
+function showScene(target) {
+  scenes.forEach(s => s.classList.remove("active"));
+  if (target) target.classList.add("active");
 }
 
-function startTimeline() {
-  const start = performance.now();
+function tick(startTime) {
+  const now = performance.now();
+  const elapsed = now - startTime;
 
-  // Start with intro visible
-  showScene(introScene);
+  const tIntroEnd   = DURATIONS.intro;
+  const tEventsEnd  = tIntroEnd   + DURATIONS.events;
+  const tFeatEnd    = tEventsEnd  + DURATIONS.feature;
+  const tGuidesEnd  = tFeatEnd    + DURATIONS.guides;
+  const tVenueEnd   = tGuidesEnd  + DURATIONS.venue;
+  const tOutroStart = TOTAL - DURATIONS.outro;
 
-  function step(now) {
-    const elapsed = now - start; // ms
-
-    // 0 – 2000 ms: Intro
-    if (elapsed < 2000) {
-      showScene(introScene);
+  // Scene selection
+  if (elapsed < tIntroEnd) {
+    showScene(sceneIntro);
+  } else if (elapsed < tEventsEnd) {
+    showScene(sceneEvents);
+    if (videoEvents.paused) {
+      videoEvents.currentTime = 0;
+      videoEvents.play().catch(() => {});
     }
-    // 2000 – 6000 ms: Featured Tours
-    else if (elapsed >= 2000 && elapsed < 6000) {
-      showScene(featuredScene);
-      if (featuredVideo.paused) {
-        featuredVideo.currentTime = 0;
-        featuredVideo.play().catch(() => {});
-      }
+  } else if (elapsed < tFeatEnd) {
+    showScene(sceneFeatured);
+    if (videoFeatured.paused) {
+      videoFeatured.currentTime = 0;
+      videoFeatured.play().catch(() => {});
     }
-    // 6000 – 10000 ms: City Guides
-    else if (elapsed >= 6000 && elapsed < 10000) {
-      showScene(guidesScene);
-      if (guidesVideo.paused) {
-        guidesVideo.currentTime = 0;
-        guidesVideo.play().catch(() => {});
-      }
+  } else if (elapsed < tGuidesEnd) {
+    showScene(sceneGuides);
+    if (videoGuides.paused) {
+      videoGuides.currentTime = 0;
+      videoGuides.play().catch(() => {});
     }
-    // 10000 – 15000 ms: Venue info + outro fade
-    else if (elapsed >= 10000 && elapsed < 15000) {
-      showScene(venueScene);
-
-      // Fade in outro text between 12.2–15s
-      if (elapsed > 12200) {
-        outroOverlay.classList.add("active");
-      }
-    }
-
-    // Stop at 15s (hold final frame)
-    if (elapsed < 15000) {
-      requestAnimationFrame(step);
-    } else {
-      showScene(venueScene);
-      outroOverlay.classList.add("active");
-    }
+  } else if (elapsed < tVenueEnd) {
+    showScene(sceneVenue);
+  } else {
+    // Past venue range: fix to final scene
+    showScene(sceneVenue);
   }
 
-  requestAnimationFrame(step);
+  // Outro overlay during last 1.5s
+  if (elapsed >= tOutroStart && elapsed <= TOTAL) {
+    outro.classList.add("active");
+  }
+
+  // Stop exactly at TOTAL
+  if (elapsed < TOTAL) {
+    requestAnimationFrame(() => tick(startTime));
+  } else {
+    showScene(sceneVenue);
+    outro.classList.add("active");
+  }
 }
 
-// Autostart on load, with a click fallback for autoplay restrictions
-window.addEventListener("load", () => {
-  startTimeline();
+function startSpot() {
+  const startTime = performance.now();
+  tick(startTime);
+}
 
-  // Tap/click once to ensure videos can play on mobile if autoplay is blocked
+// Start automatically
+window.addEventListener("load", () => {
+  startSpot();
+
+  // Mobile autoplay fallback
   document.body.addEventListener(
     "click",
     () => {
-      [featuredVideo, guidesVideo].forEach((v) => {
+      [videoEvents, videoFeatured, videoGuides].forEach(v => {
         v.muted = true;
         v.play().catch(() => {});
       });
