@@ -2,10 +2,8 @@
   --bg: #F8F9F9;
   --ink: #121E36;
   --muted: #5E6B86;
-  --surface: #FFFFFF;
-  --border: #E2E7F0;
   --radius-phone: 32px;
-  --shadow-phone: 0 26px 70px rgba(0, 0, 0, 0.22);
+  --shadow-phone: 0 26px 70px rgba(0, 0, 0, 0.18);
 }
 
 /* Reset */
@@ -51,17 +49,17 @@ body {
   height: 100%;
 }
 
-/* Scenes */
+/* Scene base */
 .scene {
   position: absolute;
   inset: 0;
   opacity: 0;
   pointer-events: none;
+  padding: 18px 18px 22px;
   display: flex;
   align-items: stretch;
   justify-content: center;
-  padding: 18px 18px 22px;
-  transition: opacity 600ms ease;
+  transition: opacity 500ms ease;
 }
 
 .scene.is-active {
@@ -69,27 +67,12 @@ body {
   pointer-events: auto;
 }
 
-/* Shared layout */
 .scene-inner {
   width: 100%;
   height: 100%;
   display: flex;
   flex-direction: column;
-}
-
-/* Stack layout (intro / venue / concerto+) */
-.scene-inner--stack {
   justify-content: space-between;
-}
-
-/* Split layout (tours / guides) */
-.scene-inner--split {
-  flex-direction: column;
-  justify-content: space-between;
-}
-
-.scene-inner--reverse .scene-copy {
-  order: 2;
 }
 
 /* Intro */
@@ -100,7 +83,7 @@ body {
   flex-direction: column;
   gap: 12px;
   align-items: center;
-  animation: intro-pop 900ms cubic-bezier(0.19, 1, 0.22, 1);
+  animation: intro-pop 800ms cubic-bezier(0.19, 1, 0.22, 1);
 }
 
 .logo-intro {
@@ -108,7 +91,7 @@ body {
 }
 
 .intro-tagline {
-  font-size: 0.8rem;
+  font-size: 0.78rem;
   letter-spacing: 0.22em;
   text-transform: uppercase;
   color: var(--ink);
@@ -117,7 +100,7 @@ body {
 @keyframes intro-pop {
   from {
     opacity: 0;
-    transform: translateY(22px) scale(0.9);
+    transform: translateY(20px) scale(0.9);
   }
   to {
     opacity: 1;
@@ -126,138 +109,41 @@ body {
 }
 
 /* Headers & text */
+
 .scene-header {
   padding-top: 4px;
 }
 
-.scene-header--center {
-  text-align: center;
-}
-
 .chip {
-  display: inline-block;
   font-size: 0.7rem;
   letter-spacing: 0.18em;
   text-transform: uppercase;
   color: var(--muted);
-  padding-bottom: 4px;
+  margin-bottom: 2px;
 }
 
 .scene-title {
-  font-size: 1.1rem;
-  letter-spacing: 0.16em;
+  font-size: 1.05rem;
+  letter-spacing: 0.14em;
   text-transform: uppercase;
   color: var(--ink);
 }
 
 .lede {
-  font-size: 0.86rem;
-  color: var(--muted);
-  margin-top: 8px;
-  margin-bottom: 8px;
-}
-
-/* Bullets */
-.bullet-list {
-  list-style: none;
-  display: flex;
-  flex-direction: column;
-  gap: 4px;
-  font-size: 0.78rem;
-  color: var(--muted);
-}
-
-/* Copy blocks */
-.scene-copy {
-  animation: copy-rise 700ms ease-out;
-}
-
-.scene-copy--left,
-.scene-copy--right,
-.scene-copy--venue {
-  background: rgba(255, 255, 255, 0.85);
-  border-radius: 16px;
-  padding: 10px 12px 10px;
-  box-shadow: 0 14px 40px rgba(18, 30, 54, 0.12);
-}
-
-.scene-copy--left {
-  margin-right: 10px;
-}
-
-.scene-copy--right {
-  margin-left: 10px;
-}
-
-.scene-copy--bottom-card {
-  background: rgba(255, 255, 255, 0.92);
-  border-radius: 16px;
-  padding: 10px 12px;
-  box-shadow: 0 16px 60px rgba(18, 30, 54, 0.18);
-}
-
-.scene-copy--center {
-  max-width: 95%;
-  text-align: center;
-  margin: 0 auto 10px;
-  background: rgba(255, 255, 255, 0.9);
-  border-radius: 16px;
-  padding: 10px 12px;
-  box-shadow: 0 16px 60px rgba(18, 30, 54, 0.18);
-}
-
-.bullet-list--center {
-  align-items: center;
-}
-
-/* Scenes: inner structure */
-.scene-body {
-  display: flex;
-  flex-direction: column;
-  gap: 12px;
-  justify-content: flex-end;
-  height: 100%;
-}
-
-.scene-body--center {
-  justify-content: space-between;
-  align-items: center;
-}
-
-.scene-body--venue {
-  display: flex;
-  flex-direction: column;
-  justify-content: space-between;
-}
-
-/* Phone shells */
-.phone-wrap {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-}
-
-/* Events – phone centered */
-.phone-wrap--events {
-  flex: 1;
-  align-items: flex-end;
-}
-
-/* Tours – phone slightly right */
-.phone-wrap--tours {
-  flex: 1;
-  align-items: flex-end;
-}
-
-/* Guides – phone slightly left */
-.phone-wrap--guides {
-  flex: 1;
-  align-items: flex-end;
-}
-
-/* Concerto+ – bigger phone */
-.phone-wrap--concerto {
   margin-top: 6px;
+  font-size: 0.84rem;
+  color: var(--muted);
+  max-width: 90%;
+}
+
+/* Phone – same position for single-feature scenes */
+
+.phone-wrap {
+  flex: 1;
+  display: flex;
+  align-items: flex-end;
+  justify-content: center;
+  padding-bottom: 6px;
 }
 
 .phone-shell {
@@ -297,7 +183,6 @@ body {
   display: block;
 }
 
-/* Reflection */
 .phone-reflection {
   position: absolute;
   inset: 0;
@@ -313,36 +198,50 @@ body {
   opacity: 0.75;
 }
 
-/* Venue grid phones */
-.venue-grid {
-  display: grid;
-  grid-template-columns: repeat(2, minmax(0, 1fr));
-  gap: 8px;
-  margin-top: 10px;
+/* Venue grid – 4 phones spaced out */
+
+.scene--venue .scene-inner {
+  justify-content: flex-start;
+  gap: 10px;
 }
 
-.venue-card {
+.scene--venue .lede {
+  max-width: 100%;
+}
+
+.venue-grid {
+  margin-top: 10px;
+  flex: 1;
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 10px;
+  align-items: center;
+  justify-items: center;
+}
+
+.venue-item {
   display: flex;
   flex-direction: column;
   align-items: center;
   gap: 4px;
   opacity: 0;
-  transform: translateY(12px);
-  animation: venue-card-rise 700ms ease-out forwards;
+  transform: translateY(14px);
+  animation: venue-rise 700ms ease-out forwards;
 }
 
-.venue-card--2 {
+.venue-item--2 {
   animation-delay: 0.12s;
 }
-.venue-card--3 {
+.venue-item--3 {
   animation-delay: 0.22s;
 }
-.venue-card--4 {
+.venue-item--4 {
   animation-delay: 0.32s;
 }
 
 .phone-shell-small {
   width: 100%;
+  max-width: 150px;
   aspect-ratio: 9 / 19;
   border-radius: 24px;
   background: radial-gradient(
@@ -379,11 +278,12 @@ body {
 }
 
 .venue-label {
-  font-size: 0.68rem;
+  font-size: 0.7rem;
   color: var(--muted);
 }
 
 /* Outro */
+
 .outro-inner {
   margin: auto;
   text-align: center;
@@ -391,7 +291,7 @@ body {
   flex-direction: column;
   gap: 10px;
   align-items: center;
-  animation: outro-pop 900ms ease-out;
+  animation: outro-pop 800ms ease-out;
 }
 
 .logo-outro {
@@ -406,21 +306,11 @@ body {
 }
 
 .outro-cta {
-  font-size: 0.86rem;
+  font-size: 0.84rem;
   color: var(--muted);
 }
 
 /* Animations */
-@keyframes copy-rise {
-  from {
-    opacity: 0;
-    transform: translateY(18px);
-  }
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
-}
 
 @keyframes phone-float {
   0% {
@@ -434,10 +324,10 @@ body {
   }
 }
 
-@keyframes venue-card-rise {
+@keyframes venue-rise {
   from {
     opacity: 0;
-    transform: translateY(12px) scale(0.97);
+    transform: translateY(14px) scale(0.97);
   }
   to {
     opacity: 1;
@@ -448,7 +338,7 @@ body {
 @keyframes outro-pop {
   from {
     opacity: 0;
-    transform: translateY(18px) scale(0.95);
+    transform: translateY(18px) scale(0.96);
   }
   to {
     opacity: 1;
@@ -456,13 +346,18 @@ body {
   }
 }
 
-/* Small tweaks */
+/* Small screens */
+
 @media (max-width: 380px) {
   .scene {
-    padding: 16px 14px 20px;
+    padding: 16px 14px 18px;
   }
 
   .logo-intro {
     width: 140px;
+  }
+
+  .lede {
+    max-width: 100%;
   }
 }
