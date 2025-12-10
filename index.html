@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <title>Concerto 15s Spot</title>
+  <title>Concerto · 15s Spot</title>
   <meta name="viewport" content="width=device-width, initial-scale=1" />
 
   <!-- Brand fonts -->
@@ -13,90 +13,147 @@
   <link rel="stylesheet" href="styles.css" />
 </head>
 <body>
-  <div class="page">
+  <div class="frame">
+    <div class="page">
 
-    <!-- Scene 0: Intro (logo + tagline, no phone) -->
-    <div id="intro-scene" class="scene scene--intro active">
-      <div class="center-stack">
-        <img src="logo.png" alt="Concerto" class="logo" />
-        <p class="eyebrow">FROM THE CONCERT, TO THE CITY.</p>
-      </div>
-    </div>
+      <!-- Scene 0: Intro (logo + tagline) -->
+      <section id="scene-intro" class="scene scene--intro active">
+        <div class="intro-stack">
+          <img src="logo.png" alt="Concerto" class="logo logo--intro" />
+          <p class="eyebrow">FROM THE CONCERT, TO THE CITY.</p>
+        </div>
+      </section>
 
-    <!-- Scene 1: Featured Tours (1 phone, screen recording + descriptors) -->
-    <div id="featured-scene" class="scene scene--featured">
-      <div class="content">
-        <div class="phone-frame phone-frame--featured">
-          <video id="featuredVideo" class="phone-video" muted playsinline></video>
-        </div>
-        <div class="text-block">
-          <h1>FEATURED TOURS</h1>
-          <p>Plan your night in seconds.</p>
-          <ul class="feature-list">
-            <li>Browse tours by artist and city</li>
-            <li>Tap “Plan Your Night” for each date</li>
-            <li>Ticket links built right in</li>
-          </ul>
-        </div>
-      </div>
-    </div>
-
-    <!-- Scene 2: City Guides (1 phone, screen recording + descriptors) -->
-    <div id="guides-scene" class="scene scene--guides">
-      <div class="content content--reverse">
-        <div class="phone-frame phone-frame--guides">
-          <video id="guidesVideo" class="phone-video" muted playsinline></video>
-        </div>
-        <div class="text-block">
-          <h1>CITY GUIDES</h1>
-          <p>Every venue. Curated.</p>
-          <ul class="feature-list">
-            <li>Restaurants, hotels, and shops near every venue</li>
-            <li>Handpicked options for before and after the show</li>
-            <li>Built for fans, not tourists</li>
-          </ul>
-        </div>
-      </div>
-    </div>
-
-    <!-- Scene 3: Venue Information (4 phones, screenshots + descriptors) -->
-    <div id="venue-scene" class="scene scene--venue">
-      <div class="venue-layout">
-        <div class="venue-copy">
-          <h1>VENUE INFORMATION</h1>
-          <p>Rideshare · Bag Policy · Concessions · Parking</p>
-          <ul class="feature-list feature-list--venue">
-            <li>Find the right rideshare pickup and drop-off</li>
-            <li>Know the bag rules before you leave home</li>
-            <li>See food and drink options by section</li>
-            <li>Parking info at a glance</li>
-          </ul>
-        </div>
-
-        <div class="phone-grid">
-          <div class="phone-frame phone-frame--small venue-phone-1">
-            <img id="venueImg1" class="phone-image" alt="Rideshare" />
+      <!-- Scene 1: Events Near Me (NEW) -->
+      <section id="scene-events" class="scene scene--events">
+        <div class="scene-inner">
+          <div class="scene-copy">
+            <p class="eyebrow">NEW · BEYOND CONCERTS</p>
+            <h1>EVENTS NEAR ME</h1>
+            <p class="lede">
+              Discover concerts, sports, comedy, and more happening around you in one view.
+            </p>
+            <ul class="feature-list">
+              <li>Browse concerts, sports, comedy, festivals, and theater</li>
+              <li>Filter by category, date, or distance</li>
+              <li>Tap any event for details and ticket links</li>
+            </ul>
           </div>
-          <div class="phone-frame phone-frame--small venue-phone-2">
-            <img id="venueImg2" class="phone-image" alt="Bag Policy" />
-          </div>
-          <div class="phone-frame phone-frame--small venue-phone-3">
-            <img id="venueImg3" class="phone-image" alt="Concessions" />
-          </div>
-          <div class="phone-frame phone-frame--small venue-phone-4">
-            <img id="venueImg4" class="phone-image" alt="Parking" />
+
+          <div class="phone-shell phone-shell--events">
+            <div class="phone-inner">
+              <video id="video-events" class="phone-screen" muted playsinline></video>
+              <div class="phone-reflection"></div>
+            </div>
           </div>
         </div>
-      </div>
-    </div>
+      </section>
 
-    <!-- Outro overlay: logo + YOUR NIGHT. PERFECTED. + Download Today -->
-    <div id="outro-overlay" class="outro-overlay">
-      <div class="outro-stack">
-        <img src="logo.png" alt="Concerto" class="logo outro-logo" />
-        <p class="outro-headline">YOUR NIGHT. PERFECTED.</p>
-        <p class="outro-cta">Download Today</p>
+      <!-- Scene 2: Featured Tours -->
+      <section id="scene-featured" class="scene scene--feature">
+        <div class="scene-inner">
+          <div class="scene-copy">
+            <p class="eyebrow">PLAN YOUR NIGHT</p>
+            <h1>FEATURED TOURS</h1>
+            <p class="lede">
+              See every tour stop, then tap once to plan your entire night.
+            </p>
+            <ul class="feature-list">
+              <li>Swipe through tours by artist and city</li>
+              <li>Tap “Plan Your Night” for any show</li>
+              <li>Ticket links built directly in</li>
+            </ul>
+          </div>
+
+          <div class="phone-shell phone-shell--feature">
+            <div class="phone-inner">
+              <video id="video-featured" class="phone-screen" muted playsinline></video>
+              <div class="phone-reflection"></div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- Scene 3: City Guides -->
+      <section id="scene-guides" class="scene scene--guides">
+        <div class="scene-inner scene-inner--reverse">
+          <div class="scene-copy">
+            <p class="eyebrow">EVERY VENUE, CURATED</p>
+            <h1>CITY GUIDES</h1>
+            <p class="lede">
+              Handpicked places to eat, stay, and shop around every arena and stadium.
+            </p>
+            <ul class="feature-list">
+              <li>Restaurants, hotels, and shops in one place</li>
+              <li>Curated for concert nights, not tourists</li>
+              <li>Built for the venue you’re actually going to</li>
+            </ul>
+          </div>
+
+          <div class="phone-shell phone-shell--guides">
+            <div class="phone-inner">
+              <video id="video-guides" class="phone-screen" muted playsinline></video>
+              <div class="phone-reflection"></div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- Scene 4: Venue Info (4 phones, screenshots) -->
+      <section id="scene-venue" class="scene scene--venue">
+        <div class="venue-inner">
+          <div class="venue-copy">
+            <p class="eyebrow">EVERY DETAIL, DIALED IN</p>
+            <h1>VENUE INFORMATION</h1>
+            <p class="lede">
+              Arrive prepared with everything from bag rules to where to grab a drink.
+            </p>
+            <ul class="feature-list feature-list--venue">
+              <li>Rideshare pickup and drop-off locations</li>
+              <li>Bag policies before you leave home</li>
+              <li>Concessions by section and level</li>
+              <li>Parking info at a glance</li>
+            </ul>
+          </div>
+
+          <div class="phone-grid">
+            <div class="phone-shell phone-shell--small venue-phone-1">
+              <div class="phone-inner">
+                <img id="img-venue-1" class="phone-screen" alt="Rideshare" />
+                <div class="phone-reflection"></div>
+              </div>
+            </div>
+            <div class="phone-shell phone-shell--small venue-phone-2">
+              <div class="phone-inner">
+                <img id="img-venue-2" class="phone-screen" alt="Bag Policy" />
+                <div class="phone-reflection"></div>
+              </div>
+            </div>
+            <div class="phone-shell phone-shell--small venue-phone-3">
+              <div class="phone-inner">
+                <img id="img-venue-3" class="phone-screen" alt="Concessions" />
+                <div class="phone-reflection"></div>
+              </div>
+            </div>
+            <div class="phone-shell phone-shell--small venue-phone-4">
+              <div class="phone-inner">
+                <img id="img-venue-4" class="phone-screen" alt="Parking" />
+                <div class="phone-reflection"></div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- Outro overlay -->
+      <div id="outro" class="outro">
+        <div class="outro-stack">
+          <img src="logo.png" alt="Concerto" class="logo logo--outro" />
+          <p class="outro-headline">YOUR NIGHT. PERFECTED.</p>
+          <p class="outro-cta">Download Today</p>
+        </div>
       </div>
+
     </div>
   </div>
 
