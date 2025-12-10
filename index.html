@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Concerto 15s Spot</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <!-- Brand fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;500;600&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+  <div class="page">
+
+    <!-- Scene 0: Intro (logo + tagline, no phone) -->
+    <div id="intro-scene" class="scene scene--intro active">
+      <div class="center-stack">
+        <img src="logo.png" alt="Concerto" class="logo" />
+        <p class="eyebrow">FROM THE CONCERT, TO THE CITY.</p>
+      </div>
+    </div>
+
+    <!-- Scene 1: Featured Tours (1 phone, screen recording + descriptors) -->
+    <div id="featured-scene" class="scene scene--featured">
+      <div class="content">
+        <div class="phone-frame phone-frame--featured">
+          <video id="featuredVideo" class="phone-video" muted playsinline></video>
+        </div>
+        <div class="text-block">
+          <h1>FEATURED TOURS</h1>
+          <p>Plan your night in seconds.</p>
+          <ul class="feature-list">
+            <li>Browse tours by artist and city</li>
+            <li>Tap “Plan Your Night” for each date</li>
+            <li>Ticket links built right in</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+
+    <!-- Scene 2: City Guides (1 phone, screen recording + descriptors) -->
+    <div id="guides-scene" class="scene scene--guides">
+      <div class="content content--reverse">
+        <div class="phone-frame phone-frame--guides">
+          <video id="guidesVideo" class="phone-video" muted playsinline></video>
+        </div>
+        <div class="text-block">
+          <h1>CITY GUIDES</h1>
+          <p>Every venue. Curated.</p>
+          <ul class="feature-list">
+            <li>Restaurants, hotels, and shops near every venue</li>
+            <li>Handpicked options for before and after the show</li>
+            <li>Built for fans, not tourists</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+
+    <!-- Scene 3: Venue Information (4 phones, screenshots + descriptors) -->
+    <div id="venue-scene" class="scene scene--venue">
+      <div class="venue-layout">
+        <div class="venue-copy">
+          <h1>VENUE INFORMATION</h1>
+          <p>Rideshare · Bag Policy · Concessions · Parking</p>
+          <ul class="feature-list feature-list--venue">
+            <li>Find the right rideshare pickup and drop-off</li>
+            <li>Know the bag rules before you leave home</li>
+            <li>See food and drink options by section</li>
+            <li>Parking info at a glance</li>
+          </ul>
+        </div>
+
+        <div class="phone-grid">
+          <div class="phone-frame phone-frame--small venue-phone-1">
+            <img id="venueImg1" class="phone-image" alt="Rideshare" />
+          </div>
+          <div class="phone-frame phone-frame--small venue-phone-2">
+            <img id="venueImg2" class="phone-image" alt="Bag Policy" />
+          </div>
+          <div class="phone-frame phone-frame--small venue-phone-3">
+            <img id="venueImg3" class="phone-image" alt="Concessions" />
+          </div>
+          <div class="phone-frame phone-frame--small venue-phone-4">
+            <img id="venueImg4" class="phone-image" alt="Parking" />
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Outro overlay: logo + YOUR NIGHT. PERFECTED. + Download Today -->
+    <div id="outro-overlay" class="outro-overlay">
+      <div class="outro-stack">
+        <img src="logo.png" alt="Concerto" class="logo outro-logo" />
+        <p class="outro-headline">YOUR NIGHT. PERFECTED.</p>
+        <p class="outro-cta">Download Today</p>
+      </div>
+    </div>
+  </div>
+
+  <script src="script.js"></script>
+</body>
+</html>
