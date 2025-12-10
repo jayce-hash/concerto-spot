@@ -2,10 +2,10 @@
   --bg: #F8F9F9;
   --ink: #121E36;
   --muted: #5E6B86;
-  --card: #FFFFFF;
+  --surface: #FFFFFF;
   --border: #E2E7F0;
+  --radius-phone: 32px;
   --shadow-phone: 0 26px 70px rgba(0, 0, 0, 0.22);
-  --radius-phone: 40px;
 }
 
 /* Reset */
@@ -31,16 +31,15 @@ body {
   justify-content: center;
 }
 
-/* 9:16 vertical frame */
-
+/* 9:16 frame */
 .frame {
   width: min(430px, 100vw);
   aspect-ratio: 9 / 16;
-  background: var(--bg);
+  background: radial-gradient(circle at top, #ffffff 0%, #f5f7fa 55%, #e2e7f0 100%);
   border-radius: 28px;
-  overflow: hidden;
   box-shadow: 0 0 0 1px rgba(0, 0, 0, 0.06),
     0 40px 80px rgba(0, 0, 0, 0.4);
+  overflow: hidden;
   display: flex;
   align-items: stretch;
   justify-content: center;
@@ -52,59 +51,70 @@ body {
   height: 100%;
 }
 
-/* ===== Intro Overlay ===== */
-
-.intro-overlay {
+/* Scenes */
+.scene {
   position: absolute;
   inset: 0;
-  background: radial-gradient(
-    circle at top,
-    #ffffff 0%,
-    #f2f4f8 55%,
-    #e2e7f0 100%
-  );
+  opacity: 0;
+  pointer-events: none;
   display: flex;
-  align-items: center;
+  align-items: stretch;
   justify-content: center;
-  z-index: 3;
-  opacity: 1;
-  pointer-events: auto;
+  padding: 18px 18px 22px;
   transition: opacity 600ms ease;
 }
 
-.intro-overlay.hidden {
-  opacity: 0;
-  pointer-events: none;
+.scene.is-active {
+  opacity: 1;
+  pointer-events: auto;
 }
 
-.intro-stack {
+/* Shared layout */
+.scene-inner {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+}
+
+/* Stack layout (intro / venue / concerto+) */
+.scene-inner--stack {
+  justify-content: space-between;
+}
+
+/* Split layout (tours / guides) */
+.scene-inner--split {
+  flex-direction: column;
+  justify-content: space-between;
+}
+
+.scene-inner--reverse .scene-copy {
+  order: 2;
+}
+
+/* Intro */
+.intro-inner {
+  margin: auto;
   text-align: center;
   display: flex;
   flex-direction: column;
   gap: 12px;
   align-items: center;
-  opacity: 0;
-  transform: translateY(22px) scale(0.9);
-  animation: intro-enter 900ms cubic-bezier(0.19, 1, 0.22, 1) forwards;
+  animation: intro-pop 900ms cubic-bezier(0.19, 1, 0.22, 1);
 }
 
-.logo {
-  display: block;
-}
-
-.logo--intro {
+.logo-intro {
   width: 160px;
 }
 
-.eyebrow {
-  font-family: "Cormorant Garamond", serif;
+.intro-tagline {
+  font-size: 0.8rem;
   letter-spacing: 0.22em;
   text-transform: uppercase;
-  font-size: 0.9rem;
   color: var(--ink);
 }
 
-@keyframes intro-enter {
+@keyframes intro-pop {
   from {
     opacity: 0;
     transform: translateY(22px) scale(0.9);
@@ -115,65 +125,40 @@ body {
   }
 }
 
-/* ===== Stage (shared content) ===== */
-
-.stage {
-  position: absolute;
-  inset: 0;
-  padding: 20px 18px 24px;
-  display: flex;
-  flex-direction: column;
-  gap: 18px;
-  z-index: 1;
+/* Headers & text */
+.scene-header {
+  padding-top: 4px;
 }
 
-/* Two vertical zones: copy on top, visuals below */
-
-.copy-panel {
-  flex: 0 0 auto;
-  min-height: 42%;
-  position: relative;
+.scene-header--center {
+  text-align: center;
 }
 
-.visual-panel {
-  flex: 1 1 auto;
-  position: relative;
-  display: flex;
-  align-items: flex-end;
-  justify-content: center;
-}
-
-/* Copy groups */
-
-.copy-group {
-  position: absolute;
-  inset: 0;
-  opacity: 0;
-  pointer-events: none;
-  transform: translateY(18px);
-}
-
-.copy-group.active {
-  opacity: 1;
-  pointer-events: auto;
-  animation: copy-rise 800ms ease-out forwards;
-}
-
-.copy-group h1 {
-  font-family: "Cormorant Garamond", serif;
-  font-size: 1.1rem;
-  letter-spacing: 0.22em;
+.chip {
+  display: inline-block;
+  font-size: 0.7rem;
+  letter-spacing: 0.18em;
   text-transform: uppercase;
-  margin-bottom: 4px;
+  color: var(--muted);
+  padding-bottom: 4px;
+}
+
+.scene-title {
+  font-size: 1.1rem;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--ink);
 }
 
 .lede {
-  font-size: 0.88rem;
+  font-size: 0.86rem;
   color: var(--muted);
+  margin-top: 8px;
   margin-bottom: 8px;
 }
 
-.feature-list {
+/* Bullets */
+.bullet-list {
   list-style: none;
   display: flex;
   flex-direction: column;
@@ -182,30 +167,102 @@ body {
   color: var(--muted);
 }
 
-.feature-list--venue {
-  margin-top: 8px;
+/* Copy blocks */
+.scene-copy {
+  animation: copy-rise 700ms ease-out;
 }
 
-@keyframes copy-rise {
-  from {
-    opacity: 0;
-    transform: translateY(18px);
-  }
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
+.scene-copy--left,
+.scene-copy--right,
+.scene-copy--venue {
+  background: rgba(255, 255, 255, 0.85);
+  border-radius: 16px;
+  padding: 10px 12px 10px;
+  box-shadow: 0 14px 40px rgba(18, 30, 54, 0.12);
 }
 
-/* ===== Hero Phone Rig ===== */
+.scene-copy--left {
+  margin-right: 10px;
+}
 
-.phone-rig {
-  position: absolute;
-  bottom: 0;
-  left: 50%;
-  transform: translateX(-50%);
-  width: 70%;
-  max-width: 270px;
+.scene-copy--right {
+  margin-left: 10px;
+}
+
+.scene-copy--bottom-card {
+  background: rgba(255, 255, 255, 0.92);
+  border-radius: 16px;
+  padding: 10px 12px;
+  box-shadow: 0 16px 60px rgba(18, 30, 54, 0.18);
+}
+
+.scene-copy--center {
+  max-width: 95%;
+  text-align: center;
+  margin: 0 auto 10px;
+  background: rgba(255, 255, 255, 0.9);
+  border-radius: 16px;
+  padding: 10px 12px;
+  box-shadow: 0 16px 60px rgba(18, 30, 54, 0.18);
+}
+
+.bullet-list--center {
+  align-items: center;
+}
+
+/* Scenes: inner structure */
+.scene-body {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  justify-content: flex-end;
+  height: 100%;
+}
+
+.scene-body--center {
+  justify-content: space-between;
+  align-items: center;
+}
+
+.scene-body--venue {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+
+/* Phone shells */
+.phone-wrap {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+/* Events – phone centered */
+.phone-wrap--events {
+  flex: 1;
+  align-items: flex-end;
+}
+
+/* Tours – phone slightly right */
+.phone-wrap--tours {
+  flex: 1;
+  align-items: flex-end;
+}
+
+/* Guides – phone slightly left */
+.phone-wrap--guides {
+  flex: 1;
+  align-items: flex-end;
+}
+
+/* Concerto+ – bigger phone */
+.phone-wrap--concerto {
+  margin-top: 6px;
+}
+
+.phone-shell {
+  width: 64%;
+  max-width: 260px;
   aspect-ratio: 9 / 19;
   border-radius: var(--radius-phone);
   background: radial-gradient(
@@ -215,50 +272,40 @@ body {
     #c5cedf 100%
   );
   box-shadow: var(--shadow-phone);
-  padding: 9px;
+  padding: 8px;
   transform-style: preserve-3d;
-  opacity: 0;
-  pointer-events: none;
+  animation: phone-float 16s ease-in-out infinite;
 }
 
-.phone-rig.active {
-  opacity: 1;
-  pointer-events: auto;
+.phone-shell--large {
+  width: 70%;
 }
 
-/* Base position before scene-specific transforms */
-.phone-rig {
-  transition:
-    transform 900ms cubic-bezier(0.19, 1, 0.22, 1),
-    opacity 600ms ease;
-}
-
-.phone-body {
+.phone-glass {
   width: 100%;
   height: 100%;
-  border-radius: calc(var(--radius-phone) - 9px);
+  border-radius: calc(var(--radius-phone) - 8px);
   overflow: hidden;
   background: #000;
   position: relative;
 }
 
-.phone-screen {
+.phone-media {
   width: 100%;
   height: 100%;
-  display: block;
   object-fit: cover;
+  display: block;
 }
 
-/* Reflection overlay */
-
+/* Reflection */
 .phone-reflection {
-  pointer-events: none;
   position: absolute;
   inset: 0;
+  pointer-events: none;
   background: linear-gradient(
     130deg,
     rgba(255, 255, 255, 0.22) 0%,
-    rgba(255, 255, 255, 0.05) 32%,
+    rgba(255, 255, 255, 0.06) 32%,
     transparent 60%,
     rgba(255, 255, 255, 0.12) 100%
   );
@@ -266,102 +313,38 @@ body {
   opacity: 0.75;
 }
 
-/* Subtle, continuous drift shared by all hero layouts */
-.phone-rig.active .phone-body {
-  animation: phone-drift 18s ease-in-out infinite;
-}
-
-@keyframes phone-drift {
-  0% {
-    transform: translateY(4px) scale(0.99);
-  }
-  50% {
-    transform: translateY(-6px) scale(1.02);
-  }
-  100% {
-    transform: translateY(4px) scale(0.99);
-  }
-}
-
-/* Scene-specific poses (Apple camera moves) */
-
-.phone-rig--events {
-  transform: translateX(-50%) translateY(10px)
-    rotateX(11deg) rotateY(-10deg) rotateZ(-2deg) scale(1);
-}
-
-.phone-rig--featured {
-  transform: translateX(-50%) translateY(12px)
-    rotateX(12deg) rotateY(-14deg) rotateZ(-2deg) scale(1.02);
-}
-
-.phone-rig--guides {
-  transform: translateX(-50%) translateY(12px)
-    rotateX(12deg) rotateY(12deg) rotateZ(2deg) scale(1.02);
-}
-
-/* When scene changes, we quickly fade and reposition rig */
-.phone-rig.switching {
-  opacity: 0;
-}
-
-/* ===== Venue Grid (4 phones scene) ===== */
-
+/* Venue grid phones */
 .venue-grid {
-  position: absolute;
-  inset: auto 0 0 0;
-  padding-bottom: 4px;
   display: grid;
   grid-template-columns: repeat(2, minmax(0, 1fr));
-  gap: 10px;
+  gap: 8px;
+  margin-top: 10px;
+}
+
+.venue-card {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 4px;
   opacity: 0;
-  pointer-events: none;
-  transform: translateY(20px);
-  transition:
-    opacity 700ms ease,
-    transform 700ms ease;
+  transform: translateY(12px);
+  animation: venue-card-rise 700ms ease-out forwards;
 }
 
-.venue-grid.active {
-  opacity: 1;
-  pointer-events: auto;
-  transform: translateY(0);
+.venue-card--2 {
+  animation-delay: 0.12s;
 }
-
-.venue-phone {
-  opacity: 0;
-  transform: translateY(16px) scale(0.96);
+.venue-card--3 {
+  animation-delay: 0.22s;
 }
-
-.venue-grid.active .venue-phone {
-  animation: venue-phone-rise 900ms ease-out forwards;
-}
-
-.venue-grid.active .venue-phone-2 {
-  animation-delay: 0.15s;
-}
-.venue-grid.active .venue-phone-3 {
-  animation-delay: 0.3s;
-}
-.venue-grid.active .venue-phone-4 {
-  animation-delay: 0.45s;
-}
-
-@keyframes venue-phone-rise {
-  from {
-    opacity: 0;
-    transform: translateY(16px) scale(0.96);
-  }
-  to {
-    opacity: 1;
-    transform: translateY(0) scale(1);
-  }
+.venue-card--4 {
+  animation-delay: 0.32s;
 }
 
 .phone-shell-small {
   width: 100%;
   aspect-ratio: 9 / 19;
-  border-radius: 32px;
+  border-radius: 24px;
   background: radial-gradient(
     circle at 10% 0%,
     #ffffff 0%,
@@ -369,28 +352,21 @@ body {
     #c5cedf 100%
   );
   box-shadow: 0 18px 40px rgba(0, 0, 0, 0.16);
-  padding: 6px;
-}
-
-.phone-inner-small {
-  width: 100%;
-  height: 100%;
-  border-radius: 26px;
-  overflow: hidden;
-  background: #000;
+  padding: 5px;
   position: relative;
 }
 
-.phone-screen-small {
+.phone-media-small {
   width: 100%;
   height: 100%;
   object-fit: cover;
+  border-radius: 18px;
 }
 
 .phone-reflection-small {
-  pointer-events: none;
   position: absolute;
   inset: 0;
+  border-radius: 24px;
   background: linear-gradient(
     130deg,
     rgba(255, 255, 255, 0.22) 0%,
@@ -402,108 +378,91 @@ body {
   opacity: 0.7;
 }
 
-/* ===== Outro Overlay (flat, Apple style) ===== */
-
-.outro-overlay {
-  position: absolute;
-  inset: 0;
-  opacity: 0;
-  pointer-events: none;
-  background: radial-gradient(
-    circle at center,
-    rgba(255, 255, 255, 1) 0%,
-    rgba(248, 249, 249, 1) 65%
-  );
-  transition: opacity 550ms ease;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  z-index: 4;
+.venue-label {
+  font-size: 0.68rem;
+  color: var(--muted);
 }
 
-.outro-overlay.active {
-  opacity: 1;
-}
-
-.outro-stack {
+/* Outro */
+.outro-inner {
+  margin: auto;
   text-align: center;
   display: flex;
   flex-direction: column;
-  align-items: center;
   gap: 10px;
-  opacity: 0;
-  transform: translateY(18px) scale(0.96);
-  animation: outro-enter 900ms ease-out forwards;
+  align-items: center;
+  animation: outro-pop 900ms ease-out;
 }
 
-.logo--outro {
+.logo-outro {
   width: 120px;
-  filter: none; /* flat, no drop shadow */
 }
 
-.outro-headline {
-  font-family: "Cormorant Garamond", serif;
-  letter-spacing: 0.22em;
+.outro-line {
+  font-size: 0.9rem;
+  letter-spacing: 0.16em;
   text-transform: uppercase;
-  font-size: 1rem;
   color: var(--ink);
-  opacity: 0;
-  animation: outro-text-fade 800ms ease-out forwards;
-  animation-delay: 260ms;
 }
 
 .outro-cta {
-  font-size: 0.9rem;
+  font-size: 0.86rem;
   color: var(--muted);
-  opacity: 0;
-  animation: outro-text-fade 800ms ease-out forwards;
-  animation-delay: 550ms;
 }
 
-@keyframes outro-enter {
+/* Animations */
+@keyframes copy-rise {
   from {
     opacity: 0;
-    transform: translateY(18px) scale(0.96);
+    transform: translateY(18px);
   }
   to {
     opacity: 1;
-    transform: translateY(0) scale(1);
+    transform: translateY(0);
   }
 }
 
-@keyframes outro-text-fade {
-  from {
-    opacity: 0;
-  }
-  to {
-    opacity: 1;
-  }
-}
-
-/* Optional slow push-in for the outro stack */
-.outro-overlay.active .outro-stack {
-  animation:
-    outro-enter 900ms ease-out forwards,
-    outro-push 16s linear infinite 0.9s;
-}
-
-@keyframes outro-push {
+@keyframes phone-float {
   0% {
-    transform: translateY(0) scale(1);
+    transform: translateY(4px) scale(0.99);
+  }
+  50% {
+    transform: translateY(-6px) scale(1.02);
   }
   100% {
-    transform: translateY(-2px) scale(1.03);
+    transform: translateY(4px) scale(0.99);
   }
 }
 
-/* Small-screen tweaks */
+@keyframes venue-card-rise {
+  from {
+    opacity: 0;
+    transform: translateY(12px) scale(0.97);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
 
+@keyframes outro-pop {
+  from {
+    opacity: 0;
+    transform: translateY(18px) scale(0.95);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+/* Small tweaks */
 @media (max-width: 380px) {
-  .stage {
-    padding: 18px 16px 22px;
+  .scene {
+    padding: 16px 14px 20px;
   }
 
-  .logo--intro {
+  .logo-intro {
     width: 140px;
   }
 }
