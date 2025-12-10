@@ -1,0 +1,392 @@
+:root {
+  --bg: #F8F9F9;
+  --ink: #121E36;
+  --muted: #5E6B86;
+  --card: #FFFFFF;
+  --border: #E2E7F0;
+  --shadow-phone: 0 18px 40px rgba(0, 0, 0, 0.16);
+  --radius-phone: 32px;
+}
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+html,
+body {
+  height: 100%;
+}
+
+body {
+  font-family: "Inter", system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+  background: var(--bg);
+  color: var(--ink);
+}
+
+.page {
+  height: 100vh;
+  width: 100vw;
+  overflow: hidden;
+  position: relative;
+}
+
+/* Generic scenes */
+
+.scene {
+  position: absolute;
+  inset: 0;
+  opacity: 0;
+  pointer-events: none;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: opacity 450ms ease;
+}
+
+.scene.active {
+  opacity: 1;
+  pointer-events: auto;
+}
+
+/* Intro scene */
+
+.scene--intro {
+  background: radial-gradient(circle at top, #ffffff 0%, #f2f4f8 60%, #e2e7f0 100%);
+}
+
+.center-stack {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 10px;
+  text-align: center;
+  padding: 0 24px;
+}
+
+.logo {
+  width: 140px;
+  height: auto;
+}
+
+.eyebrow {
+  font-family: "Cormorant Garamond", serif;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  font-size: 0.9rem;
+}
+
+/* Shared layout for scenes 1 & 2 */
+
+.content {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 32px;
+  padding: 24px;
+  max-width: 960px;
+  width: 100%;
+}
+
+.content--reverse {
+  flex-direction: row-reverse;
+}
+
+@media (max-width: 768px) {
+  .content,
+  .content--reverse {
+    flex-direction: column;
+    gap: 20px;
+  }
+}
+
+/* Phone frame base */
+
+.phone-frame {
+  background: linear-gradient(160deg, #ffffff, #f1f4fb);
+  border-radius: var(--radius-phone);
+  padding: 10px;
+  box-shadow: var(--shadow-phone);
+  border: 1px solid rgba(0, 0, 0, 0.03);
+  overflow: hidden;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.phone-video,
+.phone-image {
+  width: 100%;
+  height: 100%;
+  border-radius: calc(var(--radius-phone) - 10px);
+  object-fit: cover;
+  background: #000;
+}
+
+/* Scene 1: Featured Tours – one phone with subtle float/zoom */
+
+.phone-frame--featured {
+  width: min(320px, 65vw);
+  height: calc(min(320px, 65vw) * 2);
+  animation: featured-drift 16s ease-in-out infinite;
+  transform-origin: center center;
+}
+
+@keyframes featured-drift {
+  0% {
+    transform: translateY(8px) scale(0.97) rotate(-0.4deg);
+  }
+  30% {
+    transform: translateY(0) scale(1) rotate(0deg);
+  }
+  60% {
+    transform: translateY(-6px) scale(1.02) rotate(0.3deg);
+  }
+  100% {
+    transform: translateY(8px) scale(0.97) rotate(-0.4deg);
+  }
+}
+
+/* Scene 2: City Guides – one phone with horizontal drift */
+
+.phone-frame--guides {
+  width: min(320px, 65vw);
+  height: calc(min(320px, 65vw) * 2);
+  animation: guides-sway 18s ease-in-out infinite;
+  transform-origin: center center;
+}
+
+@keyframes guides-sway {
+  0% {
+    transform: translateX(0px) translateY(6px) scale(0.98) rotate(0deg);
+  }
+  25% {
+    transform: translateX(-6px) translateY(0px) scale(1) rotate(-0.5deg);
+  }
+  50% {
+    transform: translateX(4px) translateY(-4px) scale(1.01) rotate(0.4deg);
+  }
+  75% {
+    transform: translateX(-2px) translateY(2px) scale(1) rotate(0deg);
+  }
+  100% {
+    transform: translateX(0px) translateY(6px) scale(0.98) rotate(0deg);
+  }
+}
+
+/* Text blocks */
+
+.text-block {
+  max-width: 320px;
+}
+
+.text-block h1 {
+  font-family: "Cormorant Garamond", serif;
+  font-size: 1.4rem;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  margin-bottom: 6px;
+}
+
+.text-block p {
+  font-size: 0.9rem;
+  color: var(--muted);
+  margin-bottom: 8px;
+}
+
+/* Feature descriptors */
+
+.feature-list {
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  font-size: 0.8rem;
+  color: var(--muted);
+}
+
+.feature-list--venue {
+  margin-top: 10px;
+}
+
+/* Scene 3: Venue information – 4-phone grid */
+
+.scene--venue {
+  padding: 24px;
+}
+
+.venue-layout {
+  max-width: 1024px;
+  width: 100%;
+  margin: 0 auto;
+  display: grid;
+  grid-template-columns: minmax(0, 0.9fr) minmax(0, 1.1fr);
+  gap: 32px;
+  align-items: center;
+}
+
+@media (max-width: 900px) {
+  .venue-layout {
+    grid-template-columns: 1fr;
+    gap: 24px;
+  }
+}
+
+.venue-copy h1 {
+  font-family: "Cormorant Garamond", serif;
+  font-size: 1.3rem;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  margin-bottom: 8px;
+}
+
+.venue-copy p {
+  font-size: 0.9rem;
+  color: var(--muted);
+}
+
+/* 2x2 phone grid */
+
+.phone-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 16px;
+}
+
+.phone-frame--small {
+  width: 100%;
+  aspect-ratio: 9 / 18;
+  border-radius: 26px;
+}
+
+/* Staggered pop-in for 4 phones */
+
+.venue-phone-1,
+.venue-phone-2,
+.venue-phone-3,
+.venue-phone-4 {
+  opacity: 0;
+  transform: translateY(16px) scale(0.96);
+}
+
+.scene--venue.active .venue-phone-1 {
+  animation: venue-pop 500ms ease-out forwards;
+  animation-delay: 0ms;
+}
+
+.scene--venue.active .venue-phone-2 {
+  animation: venue-pop 500ms ease-out forwards;
+  animation-delay: 120ms;
+}
+
+.scene--venue.active .venue-phone-3 {
+  animation: venue-pop 500ms ease-out forwards;
+  animation-delay: 240ms;
+}
+
+.scene--venue.active .venue-phone-4 {
+  animation: venue-pop 500ms ease-out forwards;
+  animation-delay: 360ms;
+}
+
+@keyframes venue-pop {
+  from {
+    opacity: 0;
+    transform: translateY(16px) scale(0.96);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+/* Outro overlay (final logo + tagline + Download Today) */
+
+.outro-overlay {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  pointer-events: none;
+  opacity: 0;
+  background: var(--bg);
+  transition: opacity 600ms ease;
+}
+
+/* Bright, soft radial glow behind the logo when active */
+.outro-overlay.active {
+  opacity: 1;
+  background: radial-gradient(
+    circle at center,
+    rgba(255, 255, 255, 1) 0%,
+    rgba(248, 249, 249, 1) 60%
+  );
+}
+
+.outro-stack {
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 12px;
+  transform: translateY(10px);
+  opacity: 0;
+  animation: outro-appear 1.2s ease-out forwards;
+}
+
+.outro-logo {
+  width: 110px;
+  animation: outro-glow 4s ease-in-out infinite;
+}
+
+@keyframes outro-appear {
+  0% {
+    opacity: 0;
+    transform: translateY(14px) scale(0.94);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0px) scale(1);
+  }
+}
+
+/* Soft pulse around the logo */
+@keyframes outro-glow {
+  0% {
+    filter: drop-shadow(0 0 4px rgba(18, 30, 54, 0.2));
+  }
+  50% {
+    filter: drop-shadow(0 0 10px rgba(18, 30, 54, 0.35));
+  }
+  100% {
+    filter: drop-shadow(0 0 4px rgba(18, 30, 54, 0.2));
+  }
+}
+
+.outro-headline {
+  font-family: "Cormorant Garamond", serif;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  font-size: 1.1rem;
+  color: var(--ink);
+  opacity: 0;
+  animation: outro-text-fade 1.2s ease-out forwards;
+  animation-delay: 0.4s;
+}
+
+.outro-cta {
+  font-size: 0.95rem;
+  color: var(--muted);
+  opacity: 0;
+  animation: outro-text-fade 1.2s ease-out forwards;
+  animation-delay: 1s;
+}
+
+@keyframes outro-text-fade {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
