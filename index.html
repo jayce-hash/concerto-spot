@@ -16,18 +16,20 @@
   <div class="frame">
     <div class="page">
 
-      <!-- Scene 0: Intro (logo + tagline) -->
-      <section id="scene-intro" class="scene scene--intro active">
+      <!-- Intro overlay -->
+      <div id="introOverlay" class="intro-overlay">
         <div class="intro-stack">
           <img src="logo.png" alt="Concerto" class="logo logo--intro" />
           <p class="eyebrow">FROM THE CONCERT, TO THE CITY.</p>
         </div>
-      </section>
+      </div>
 
-      <!-- Scene 1: Events Near Me (NEW) -->
-      <section id="scene-events" class="scene scene--events">
-        <div class="scene-inner">
-          <div class="scene-copy">
+      <!-- Main scene stage: shared hero phone + text + venue grid -->
+      <section class="stage">
+        <!-- Copy panel -->
+        <div class="copy-panel">
+          <!-- Events Near Me copy -->
+          <div class="copy-group copy-group--events active" data-scene="events">
             <p class="eyebrow">NEW · BEYOND CONCERTS</p>
             <h1>EVENTS NEAR ME</h1>
             <p class="lede">
@@ -40,19 +42,8 @@
             </ul>
           </div>
 
-          <div class="phone-shell phone-shell--events">
-            <div class="phone-inner">
-              <video id="video-events" class="phone-screen" muted playsinline></video>
-              <div class="phone-reflection"></div>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      <!-- Scene 2: Featured Tours -->
-      <section id="scene-featured" class="scene scene--feature">
-        <div class="scene-inner">
-          <div class="scene-copy">
+          <!-- Featured Tours copy -->
+          <div class="copy-group copy-group--featured" data-scene="featured">
             <p class="eyebrow">PLAN YOUR NIGHT</p>
             <h1>FEATURED TOURS</h1>
             <p class="lede">
@@ -65,19 +56,8 @@
             </ul>
           </div>
 
-          <div class="phone-shell phone-shell--feature">
-            <div class="phone-inner">
-              <video id="video-featured" class="phone-screen" muted playsinline></video>
-              <div class="phone-reflection"></div>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      <!-- Scene 3: City Guides -->
-      <section id="scene-guides" class="scene scene--guides">
-        <div class="scene-inner scene-inner--reverse">
-          <div class="scene-copy">
+          <!-- City Guides copy -->
+          <div class="copy-group copy-group--guides" data-scene="guides">
             <p class="eyebrow">EVERY VENUE, CURATED</p>
             <h1>CITY GUIDES</h1>
             <p class="lede">
@@ -90,19 +70,8 @@
             </ul>
           </div>
 
-          <div class="phone-shell phone-shell--guides">
-            <div class="phone-inner">
-              <video id="video-guides" class="phone-screen" muted playsinline></video>
-              <div class="phone-reflection"></div>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      <!-- Scene 4: Venue Info (4 phones, screenshots) -->
-      <section id="scene-venue" class="scene scene--venue">
-        <div class="venue-inner">
-          <div class="venue-copy">
+          <!-- Venue Information copy -->
+          <div class="copy-group copy-group--venue" data-scene="venue">
             <p class="eyebrow">EVERY DETAIL, DIALED IN</p>
             <h1>VENUE INFORMATION</h1>
             <p class="lede">
@@ -115,30 +84,50 @@
               <li>Parking info at a glance</li>
             </ul>
           </div>
+        </div>
 
-          <div class="phone-grid">
-            <div class="phone-shell phone-shell--small venue-phone-1">
-              <div class="phone-inner">
-                <img id="img-venue-1" class="phone-screen" alt="Rideshare" />
-                <div class="phone-reflection"></div>
+        <!-- Visual panel -->
+        <div class="visual-panel">
+          <!-- Hero phone rig (used for events, featured, guides) -->
+          <div id="phoneRig" class="phone-rig phone-rig--events active">
+            <div class="phone-body">
+              <video id="phoneVideo" class="phone-screen" muted playsinline></video>
+              <div class="phone-reflection"></div>
+            </div>
+          </div>
+
+          <!-- Venue grid (used only for venue scene) -->
+          <div id="venueGrid" class="venue-grid">
+            <div class="venue-phone venue-phone-1">
+              <div class="phone-shell-small">
+                <div class="phone-inner-small">
+                  <img id="img-venue-1" class="phone-screen-small" alt="Rideshare" />
+                  <div class="phone-reflection-small"></div>
+                </div>
               </div>
             </div>
-            <div class="phone-shell phone-shell--small venue-phone-2">
-              <div class="phone-inner">
-                <img id="img-venue-2" class="phone-screen" alt="Bag Policy" />
-                <div class="phone-reflection"></div>
+            <div class="venue-phone venue-phone-2">
+              <div class="phone-shell-small">
+                <div class="phone-inner-small">
+                  <img id="img-venue-2" class="phone-screen-small" alt="Bag Policy" />
+                  <div class="phone-reflection-small"></div>
+                </div>
               </div>
             </div>
-            <div class="phone-shell phone-shell--small venue-phone-3">
-              <div class="phone-inner">
-                <img id="img-venue-3" class="phone-screen" alt="Concessions" />
-                <div class="phone-reflection"></div>
+            <div class="venue-phone venue-phone-3">
+              <div class="phone-shell-small">
+                <div class="phone-inner-small">
+                  <img id="img-venue-3" class="phone-screen-small" alt="Concessions" />
+                  <div class="phone-reflection-small"></div>
+                </div>
               </div>
             </div>
-            <div class="phone-shell phone-shell--small venue-phone-4">
-              <div class="phone-inner">
-                <img id="img-venue-4" class="phone-screen" alt="Parking" />
-                <div class="phone-reflection"></div>
+            <div class="venue-phone venue-phone-4">
+              <div class="phone-shell-small">
+                <div class="phone-inner-small">
+                  <img id="img-venue-4" class="phone-screen-small" alt="Parking" />
+                  <div class="phone-reflection-small"></div>
+                </div>
               </div>
             </div>
           </div>
@@ -146,7 +135,7 @@
       </section>
 
       <!-- Outro overlay -->
-      <div id="outro" class="outro">
+      <div id="outroOverlay" class="outro-overlay">
         <div class="outro-stack">
           <img src="logo.png" alt="Concerto" class="logo logo--outro" />
           <p class="outro-headline">YOUR NIGHT. PERFECTED.</p>
