@@ -1,6 +1,6 @@
-// Scene timing (ms)
+// Scene timing (ms) – approx 15s total
 const DURATIONS = {
-  intro: 1500,    // 0 - 1.5s
+  intro: 1500,    // 0 - 1.5
   events: 2300,   // 1.5 - 3.8
   tours: 2300,    // 3.8 - 6.1
   guides: 2300,   // 6.1 - 8.4
@@ -18,7 +18,10 @@ const TOTAL =
   DURATIONS.venue +
   DURATIONS.outro;
 
+// Grab scenes
 const scenes = document.querySelectorAll(".scene");
+
+// Videos for single-feature scenes
 const videos = {
   events: document.getElementById("vid-events"),
   tours: document.getElementById("vid-tours"),
@@ -41,17 +44,16 @@ function setActiveScene(key) {
     }
   });
 
-  // gently nudge videos to play when their scene is active
+  // Handle video playback
+  Object.values(videos).forEach((v) => v && v.pause());
+
   if (key in videos) {
-    Object.values(videos).forEach((v) => v && v.pause());
-    const v = videos[key];
-    if (v) {
-      v.currentTime = 0;
-      v.muted = true;
-      v.play().catch(() => {});
+    const vid = videos[key];
+    if (vid) {
+      vid.currentTime = 0;
+      vid.muted = true;
+      vid.play().catch(() => {});
     }
-  } else {
-    Object.values(videos).forEach((v) => v && v.pause());
   }
 }
 
@@ -67,7 +69,6 @@ function tick(startTime) {
   const tVenueEnd = tConcertoEnd + DURATIONS.venue;
   const tOutroStart = TOTAL - DURATIONS.outro;
 
-  // Decide which scene should be on
   if (elapsed < tIntroEnd) {
     setActiveScene("intro");
   } else if (elapsed < tEventsEnd) {
@@ -87,7 +88,7 @@ function tick(startTime) {
   if (elapsed < TOTAL) {
     requestAnimationFrame(() => tick(startTime));
   } else {
-    // Hold final outro frame
+    // Hold final frame on outro
     setActiveScene("outro");
   }
 }
@@ -97,13 +98,11 @@ function startSpot() {
   tick(startTime);
 }
 
-// Start automatically
 window.addEventListener("load", () => {
-  // Begin with intro visible
   setActiveScene("intro");
   startSpot();
 
-  // Mobile/autoplay nudge
+  // mobile autoplay nudge
   document.body.addEventListener(
     "click",
     () => {
