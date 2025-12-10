@@ -2,13 +2,16 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <title>Concerto · 15s Spot</title>
+  <title>Concerto · Feature Spot</title>
   <meta name="viewport" content="width=device-width, initial-scale=1" />
 
-  <!-- Brand fonts -->
+  <!-- Fonts -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;500;600&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+  <link
+    href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&display=swap"
+    rel="stylesheet"
+  />
 
   <link rel="stylesheet" href="styles.css" />
 </head>
@@ -16,117 +19,148 @@
   <div class="frame">
     <div class="page">
 
-      <!-- Intro overlay -->
-      <div id="introOverlay" class="intro-overlay">
-        <div class="intro-stack">
-          <img src="logo.png" alt="Concerto" class="logo logo--intro" />
-          <p class="eyebrow">FROM THE CONCERT, TO THE CITY.</p>
+      <!-- Intro -->
+      <section class="scene scene--intro is-active" data-scene="intro">
+        <div class="intro-inner">
+          <img src="logo.png" alt="Concerto" class="logo-intro" />
+          <p class="intro-tagline">FROM THE CONCERT, TO THE CITY.</p>
         </div>
-      </div>
+      </section>
 
-      <!-- Main scene stage: shared hero phone + text + venue grid -->
-      <section class="stage">
-        <!-- Copy panel -->
-        <div class="copy-panel">
-          <!-- Events Near Me copy -->
-          <div class="copy-group copy-group--events active" data-scene="events">
-            <p class="eyebrow">NEW · BEYOND CONCERTS</p>
-            <h1>EVENTS NEAR ME</h1>
-            <p class="lede">
-              Discover concerts, sports, comedy, and more happening around you in one view.
-            </p>
-            <ul class="feature-list">
-              <li>Browse concerts, sports, comedy, festivals, and theater</li>
-              <li>Filter by category, date, or distance</li>
-              <li>Tap any event for details and ticket links</li>
-            </ul>
-          </div>
+      <!-- Events Near Me -->
+      <section class="scene scene--events" data-scene="events">
+        <div class="scene-inner scene-inner--stack">
+          <header class="scene-header">
+            <p class="chip">NEW · BEYOND CONCERTS</p>
+            <h1 class="scene-title">Events Near Me</h1>
+          </header>
 
-          <!-- Featured Tours copy -->
-          <div class="copy-group copy-group--featured" data-scene="featured">
-            <p class="eyebrow">PLAN YOUR NIGHT</p>
-            <h1>FEATURED TOURS</h1>
-            <p class="lede">
-              See every tour stop, then tap once to plan your entire night.
-            </p>
-            <ul class="feature-list">
-              <li>Swipe through tours by artist and city</li>
-              <li>Tap “Plan Your Night” for any show</li>
-              <li>Ticket links built directly in</li>
-            </ul>
-          </div>
-
-          <!-- City Guides copy -->
-          <div class="copy-group copy-group--guides" data-scene="guides">
-            <p class="eyebrow">EVERY VENUE, CURATED</p>
-            <h1>CITY GUIDES</h1>
-            <p class="lede">
-              Handpicked places to eat, stay, and shop around every arena and stadium.
-            </p>
-            <ul class="feature-list">
-              <li>Restaurants, hotels, and shops in one place</li>
-              <li>Curated for concert nights, not tourists</li>
-              <li>Built for the venue you’re actually going to</li>
-            </ul>
-          </div>
-
-          <!-- Venue Information copy -->
-          <div class="copy-group copy-group--venue" data-scene="venue">
-            <p class="eyebrow">EVERY DETAIL, DIALED IN</p>
-            <h1>VENUE INFORMATION</h1>
-            <p class="lede">
-              Arrive prepared with everything from bag rules to where to grab a drink.
-            </p>
-            <ul class="feature-list feature-list--venue">
-              <li>Rideshare pickup and drop-off locations</li>
-              <li>Bag policies before you leave home</li>
-              <li>Concessions by section and level</li>
-              <li>Parking info at a glance</li>
-            </ul>
+          <div class="scene-body">
+            <div class="phone-wrap phone-wrap--events">
+              <div class="phone-shell">
+                <div class="phone-glass">
+                  <video
+                    id="vid-events"
+                    class="phone-media"
+                    src="events-near-me.mp4"
+                    muted
+                    playsinline
+                    loop
+                  ></video>
+                  <div class="phone-reflection"></div>
+                </div>
+              </div>
+            </div>
+            <div class="scene-copy scene-copy--bottom-card">
+              <p class="lede">
+                Discover concerts, sports, comedy, and more around you in one view.
+              </p>
+              <ul class="bullet-list">
+                <li>Scroll through shows happening nearby</li>
+                <li>Filter by category, date, or distance</li>
+                <li>Tap any event for details and tickets</li>
+              </ul>
+            </div>
           </div>
         </div>
+      </section>
 
-        <!-- Visual panel -->
-        <div class="visual-panel">
-          <!-- Hero phone rig (used for events, featured, guides) -->
-          <div id="phoneRig" class="phone-rig phone-rig--events active">
-            <div class="phone-body">
-              <video id="phoneVideo" class="phone-screen" muted playsinline></video>
-              <div class="phone-reflection"></div>
+      <!-- Featured Tours -->
+      <section class="scene scene--tours" data-scene="tours">
+        <div class="scene-inner scene-inner--split">
+          <div class="scene-copy scene-copy--left">
+            <p class="chip">PLAN YOUR NIGHT</p>
+            <h1 class="scene-title">Featured Tours</h1>
+            <p class="lede">
+              Start with the tour, then plan the entire night around the show.
+            </p>
+            <ul class="bullet-list">
+              <li>Swipe through artists, cities, and dates</li>
+              <li>Tap “Plan Your Night” on any stop</li>
+              <li>Tickets and venue details in one place</li>
+            </ul>
+          </div>
+          <div class="phone-wrap phone-wrap--tours">
+            <div class="phone-shell">
+              <div class="phone-glass">
+                <video
+                  id="vid-tours"
+                  class="phone-media"
+                  src="featured-tours.mp4"
+                  muted
+                  playsinline
+                  loop
+                ></video>
+                <div class="phone-reflection"></div>
+              </div>
             </div>
           </div>
+        </div>
+      </section>
 
-          <!-- Venue grid (used only for venue scene) -->
-          <div id="venueGrid" class="venue-grid">
-            <div class="venue-phone venue-phone-1">
-              <div class="phone-shell-small">
-                <div class="phone-inner-small">
-                  <img id="img-venue-1" class="phone-screen-small" alt="Rideshare" />
-                  <div class="phone-reflection-small"></div>
-                </div>
+      <!-- City Guides -->
+      <section class="scene scene--guides" data-scene="guides">
+        <div class="scene-inner scene-inner--split scene-inner--reverse">
+          <div class="phone-wrap phone-wrap--guides">
+            <div class="phone-shell">
+              <div class="phone-glass">
+                <video
+                  id="vid-guides"
+                  class="phone-media"
+                  src="city-guides.mp4"
+                  muted
+                  playsinline
+                  loop
+                ></video>
+                <div class="phone-reflection"></div>
               </div>
             </div>
-            <div class="venue-phone venue-phone-2">
-              <div class="phone-shell-small">
-                <div class="phone-inner-small">
-                  <img id="img-venue-2" class="phone-screen-small" alt="Bag Policy" />
-                  <div class="phone-reflection-small"></div>
-                </div>
-              </div>
+          </div>
+          <div class="scene-copy scene-copy--right">
+            <p class="chip">EVERY VENUE, CURATED</p>
+            <h1 class="scene-title">City Guides</h1>
+            <p class="lede">
+              The best places to eat, stay, and shop around every arena and stadium.
+            </p>
+            <ul class="bullet-list">
+              <li>Restaurants, hotels, and shops near your venue</li>
+              <li>Curated for concert nights, not tourist traps</li>
+              <li>Built specifically for the arena you’re going to</li>
+            </ul>
+          </div>
+        </div>
+      </section>
+
+      <!-- Concerto+ -->
+      <section class="scene scene--concerto-plus" data-scene="concerto">
+        <div class="scene-inner scene-inner--stack">
+          <header class="scene-header scene-header--center">
+            <p class="chip">AI · PERSONAL PLANNING</p>
+            <h1 class="scene-title">Concerto+</h1>
+          </header>
+          <div class="scene-body scene-body--center">
+            <div class="scene-copy scene-copy--center">
+              <p class="lede">
+                Turn your show into a full itinerary with one smart planner.
+              </p>
+              <ul class="bullet-list bullet-list--center">
+                <li>Tell Concerto+ your show, vibe, and budget</li>
+                <li>Get a curated plan from doors to after-hours</li>
+                <li>Edit, swap, and save your night in seconds</li>
+              </ul>
             </div>
-            <div class="venue-phone venue-phone-3">
-              <div class="phone-shell-small">
-                <div class="phone-inner-small">
-                  <img id="img-venue-3" class="phone-screen-small" alt="Concessions" />
-                  <div class="phone-reflection-small"></div>
-                </div>
-              </div>
-            </div>
-            <div class="venue-phone venue-phone-4">
-              <div class="phone-shell-small">
-                <div class="phone-inner-small">
-                  <img id="img-venue-4" class="phone-screen-small" alt="Parking" />
-                  <div class="phone-reflection-small"></div>
+            <div class="phone-wrap phone-wrap--concerto">
+              <div class="phone-shell phone-shell--large">
+                <div class="phone-glass">
+                  <video
+                    id="vid-concerto"
+                    class="phone-media"
+                    src="concerto-plus.mp4"
+                    muted
+                    playsinline
+                    loop
+                  ></video>
+                  <div class="phone-reflection"></div>
                 </div>
               </div>
             </div>
@@ -134,14 +168,67 @@
         </div>
       </section>
 
-      <!-- Outro overlay -->
-      <div id="outroOverlay" class="outro-overlay">
-        <div class="outro-stack">
-          <img src="logo.png" alt="Concerto" class="logo logo--outro" />
-          <p class="outro-headline">YOUR NIGHT. PERFECTED.</p>
+      <!-- Venue Information -->
+      <section class="scene scene--venue" data-scene="venue">
+        <div class="scene-inner scene-inner--stack">
+          <header class="scene-header">
+            <p class="chip">EVERY DETAIL, DIALED IN</p>
+            <h1 class="scene-title">Venue Information</h1>
+          </header>
+          <div class="scene-body scene-body--venue">
+            <div class="scene-copy scene-copy--venue">
+              <p class="lede">
+                All the logistics that normally live in ten tabs, in one clean view.
+              </p>
+              <ul class="bullet-list">
+                <li>Rideshare pickup and drop-off locations</li>
+                <li>Bag policies before you leave home</li>
+                <li>Concessions by section and level</li>
+                <li>Parking info at a glance</li>
+              </ul>
+            </div>
+            <div class="venue-grid">
+              <div class="venue-card venue-card--1">
+                <div class="phone-shell-small">
+                  <img src="venue-rideshare.png" class="phone-media-small" alt="Rideshare" />
+                  <div class="phone-reflection-small"></div>
+                </div>
+                <p class="venue-label">Rideshare</p>
+              </div>
+              <div class="venue-card venue-card--2">
+                <div class="phone-shell-small">
+                  <img src="venue-bags.png" class="phone-media-small" alt="Bag Policy" />
+                  <div class="phone-reflection-small"></div>
+                </div>
+                <p class="venue-label">Bag Policy</p>
+              </div>
+              <div class="venue-card venue-card--3">
+                <div class="phone-shell-small">
+                  <img src="venue-concessions.png" class="phone-media-small" alt="Concessions" />
+                  <div class="phone-reflection-small"></div>
+                </div>
+                <p class="venue-label">Concessions</p>
+              </div>
+              <div class="venue-card venue-card--4">
+                <div class="phone-shell-small">
+                  <img src="venue-parking.png" class="phone-media-small" alt="Parking" />
+                  <div class="phone-reflection-small"></div>
+                </div>
+                <p class="venue-label">Parking</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- Outro -->
+      <section class="scene scene--outro" data-scene="outro">
+        <div class="outro-inner">
+          <img src="logo.png" alt="Concerto" class="logo-outro" />
+          <p class="outro-line">Your night. Perfected.</p>
           <p class="outro-cta">Download Today</p>
         </div>
-      </div>
+      </section>
 
     </div>
   </div>
