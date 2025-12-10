@@ -1,108 +1,137 @@
-// Scene elements
-const sceneIntro    = document.getElementById("scene-intro");
-const sceneEvents   = document.getElementById("scene-events");
-const sceneFeatured = document.getElementById("scene-featured");
-const sceneGuides   = document.getElementById("scene-guides");
-const sceneVenue    = document.getElementById("scene-venue");
-const outro         = document.getElementById("outro");
+// Elements
+const introOverlay = document.getElementById("introOverlay");
+const outroOverlay = document.getElementById("outroOverlay");
 
-const scenes = [sceneIntro, sceneEvents, sceneFeatured, sceneGuides, sceneVenue];
+const phoneRig = document.getElementById("phoneRig");
+const phoneVideo = document.getElementById("phoneVideo");
+const venueGrid = document.getElementById("venueGrid");
 
-// Video elements
-const videoEvents   = document.getElementById("video-events");
-const videoFeatured = document.getElementById("video-featured");
-const videoGuides   = document.getElementById("video-guides");
+const copyGroups = {
+  events: document.querySelector('.copy-group--events'),
+  featured: document.querySelector('.copy-group--featured'),
+  guides: document.querySelector('.copy-group--guides'),
+  venue: document.querySelector('.copy-group--venue'),
+};
 
-// Venue images
+// Media
+const VIDEO_SOURCES = {
+  events: "events-near-me.mp4",
+  featured: "featured-tours.mp4",
+  guides: "city-guides.mp4",
+};
+
 const imgVenue1 = document.getElementById("img-venue-1");
 const imgVenue2 = document.getElementById("img-venue-2");
 const imgVenue3 = document.getElementById("img-venue-3");
 const imgVenue4 = document.getElementById("img-venue-4");
 
-// Media file assignments
-videoEvents.src   = "events-near-me.mp4";
-videoFeatured.src = "featured-tours.mp4";
-videoGuides.src   = "city-guides.mp4";
-
+// Assign venue images
 imgVenue1.src = "venue-rideshare.png";
 imgVenue2.src = "venue-bags.png";
 imgVenue3.src = "venue-concessions.png";
 imgVenue4.src = "venue-parking.png";
 
-// Timeline configuration (ms)
-// Intro: 1.5s, Events: 3s, Featured: 3s, Guides: 3s, Venue: 3s, Outro: 1.5s
+// Timeline (ms)
 const DURATIONS = {
-  intro:   1500,
-  events:  3000,
-  feature: 3000,
-  guides:  3000,
-  venue:   3000,
-  outro:   1500
+  intro:   1500,  // 0–1.5s
+  events:  3000,  // 1.5–4.5
+  featured:3000,  // 4.5–7.5
+  guides:  3000,  // 7.5–10.5
+  venue:   3000,  // 10.5–13.5
+  outro:   1500,  // 13.5–15
 };
 
 const TOTAL =
   DURATIONS.intro +
   DURATIONS.events +
-  DURATIONS.feature +
+  DURATIONS.featured +
   DURATIONS.guides +
   DURATIONS.venue +
-  DURATIONS.outro; // 15000 ms
+  DURATIONS.outro;
 
-function showScene(target) {
-  scenes.forEach(s => s.classList.remove("active"));
-  if (target) target.classList.add("active");
+// Helpers
+let currentSceneKey = null;
+let lastSrc = null;
+
+function setScene(key) {
+  if (key === currentSceneKey) return;
+  currentSceneKey = key;
+
+  // Copy groups
+  Object.entries(copyGroups).forEach(([k, el]) => {
+    if (!el) return;
+    if (k === key) {
+      el.classList.add("active");
+    } else {
+      el.classList.remove("active");
+    }
+  });
+
+  // Hero phone vs venue grid
+  if (key === "events" || key === "featured" || key === "guides") {
+    venueGrid.classList.remove("active");
+    phoneRig.classList.add("active");
+
+    // Update pose
+    phoneRig.classList.remove("phone-rig--events", "phone-rig--featured", "phone-rig--guides", "switching");
+    phoneRig.classList.add(`phone-rig--${key}`);
+
+    // Video source
+    const src = VIDEO_SOURCES[key];
+    if (src && src !== lastSrc) {
+      lastSrc = src;
+      phoneVideo.src = src;
+      phoneVideo.currentTime = 0;
+      phoneVideo.play().catch(() => {});
+    }
+  } else if (key === "venue") {
+    // Hide hero phone, show grid
+    phoneRig.classList.remove("active");
+    venueGrid.classList.add("active");
+  }
 }
 
 function tick(startTime) {
   const now = performance.now();
   const elapsed = now - startTime;
 
-  const tIntroEnd   = DURATIONS.intro;
-  const tEventsEnd  = tIntroEnd   + DURATIONS.events;
-  const tFeatEnd    = tEventsEnd  + DURATIONS.feature;
-  const tGuidesEnd  = tFeatEnd    + DURATIONS.guides;
-  const tVenueEnd   = tGuidesEnd  + DURATIONS.venue;
-  const tOutroStart = TOTAL - DURATIONS.outro;
+  const tIntroEnd    = DURATIONS.intro;
+  const tEventsEnd   = tIntroEnd + DURATIONS.events;
+  const tFeaturedEnd = tEventsEnd + DURATIONS.featured;
+  const tGuidesEnd   = tFeaturedEnd + DURATIONS.guides;
+  const tVenueEnd    = tGuidesEnd + DURATIONS.venue;
+  const tOutroStart  = TOTAL - DURATIONS.outro;
+
+  // Intro overlay
+  if (elapsed < tIntroEnd) {
+    introOverlay.classList.remove("hidden");
+  } else {
+    introOverlay.classList.add("hidden");
+  }
 
   // Scene selection
-  if (elapsed < tIntroEnd) {
-    showScene(sceneIntro);
-  } else if (elapsed < tEventsEnd) {
-    showScene(sceneEvents);
-    if (videoEvents.paused) {
-      videoEvents.currentTime = 0;
-      videoEvents.play().catch(() => {});
-    }
-  } else if (elapsed < tFeatEnd) {
-    showScene(sceneFeatured);
-    if (videoFeatured.paused) {
-      videoFeatured.currentTime = 0;
-      videoFeatured.play().catch(() => {});
-    }
-  } else if (elapsed < tGuidesEnd) {
-    showScene(sceneGuides);
-    if (videoGuides.paused) {
-      videoGuides.currentTime = 0;
-      videoGuides.play().catch(() => {});
-    }
-  } else if (elapsed < tVenueEnd) {
-    showScene(sceneVenue);
-  } else {
-    // Past venue range: fix to final scene
-    showScene(sceneVenue);
+  if (elapsed >= tIntroEnd && elapsed < tEventsEnd) {
+    setScene("events");
+  } else if (elapsed >= tEventsEnd && elapsed < tFeaturedEnd) {
+    setScene("featured");
+  } else if (elapsed >= tFeaturedEnd && elapsed < tGuidesEnd) {
+    setScene("guides");
+  } else if (elapsed >= tGuidesEnd && elapsed < tVenueEnd) {
+    setScene("venue");
   }
 
-  // Outro overlay during last 1.5s
+  // Outro overlay
   if (elapsed >= tOutroStart && elapsed <= TOTAL) {
-    outro.classList.add("active");
+    outroOverlay.classList.add("active");
   }
 
-  // Stop exactly at TOTAL
   if (elapsed < TOTAL) {
     requestAnimationFrame(() => tick(startTime));
   } else {
-    showScene(sceneVenue);
-    outro.classList.add("active");
+    // Hold final frame
+    setScene("venue");
+    outroOverlay.classList.add("active");
+    introOverlay.classList.add("hidden");
   }
 }
 
@@ -111,18 +140,18 @@ function startSpot() {
   tick(startTime);
 }
 
-// Start automatically
+// Autoplay on load
 window.addEventListener("load", () => {
+  // Start with hero phone setup (even while intro overlay is on top)
+  setScene("events");
   startSpot();
 
   // Mobile autoplay fallback
   document.body.addEventListener(
     "click",
     () => {
-      [videoEvents, videoFeatured, videoGuides].forEach(v => {
-        v.muted = true;
-        v.play().catch(() => {});
-      });
+      phoneVideo.muted = true;
+      phoneVideo.play().catch(() => {});
     },
     { once: true }
   );
